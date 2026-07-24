@@ -1,0 +1,143 @@
+.dashboard-content {
+    padding: 20px 0;
+    background-color: #f5f7fa;
+}
+
+.dashboard-panel {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+.dashboard-panel .panel-heading {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+.dashboard-panel .panel-heading h3,
+.dashboard-panel .panel-heading h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.dashboard-card {
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 15px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.drivers-card {
+    background-color: #e3e6eb;
+    border-left: 4px solid #060708;
+}
+
+.rides-card {
+    background-color: #e6fafa;
+    border-left: 4px solid #17a2b8;
+}
+
+.bookings-card {
+    background-color: #ffe6e6;
+    border-left: 4px solid #dc3545;
+}
+
+.dashboard-card h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 10px;
+}
+
+.dashboard-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.card-link {
+    font-size: 12px;
+    color: #1a1a1a;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.card-link:hover {
+    color: #9ea0a3;
+    text-decoration: underline;
+}
+
+.dashboard-table {
+    font-size: 13px;
+}
+
+.dashboard-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.dashboard-table td {
+    vertical-align: middle;
+}
+
+.dashboard-table a {
+    color: #1c1d1d;
+    text-decoration: none;
+}
+
+.dashboard-table a:hover {
+    text-decoration: underline;
+}
+
+.status-toggle {
+    width: 80px;
+    margin: 0 auto;
+}
+
+.badge {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.chart-canvas {
+    max-height: 250px;
+}
+
+.alert-dismissible .close {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+    .dashboard-card {
+        min-height: auto;
+    }
+
+    .dashboard-panel .panel-heading h3,
+    .dashboard-panel .panel-heading h4 {
+        font-size: 16px;
+    }
+
+    .dashboard-table {
+        font-size: 12px;
+    }
+}

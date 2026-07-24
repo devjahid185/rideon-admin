@@ -1,0 +1,21 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+
+    excludePaths:
+        - bootstrap/cache/*
+        - storage/*
+        - vendor/*
+
+    ignoreErrors:
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::#'
+        - '#Call to an undefined method Illuminate\\Support\\Collection::#'
+        - '#Method Illuminate\\Support\\Facades\\.*::.*\(\) does not exist#'
+        - '#Property [A-Za-z0-9_]+ does not accept#'
+
+    tmpDir: tmp/phpstan

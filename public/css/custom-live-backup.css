@@ -1,0 +1,3379 @@
+:root {
+  --primary-color: #FFC91F;
+  /* Main theme color */
+  --primary-text-color: #222;
+  /* Text color for on-primary backgrounds */
+  --secondary-color: #f4f4f4;
+  --hover-background: #E6B51C;
+  /* Darker shade of primary for hover */
+  --dark-background: #3A3A3A;
+  /* Dark background for sidebars/panels */
+  --required-color: red;
+}
+
+* {
+  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.ck-editor__editable,
+textarea {
+  min-height: 150px;
+}
+
+.datatable {
+  width: 100% !important;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+table.dataTable tbody td.select-checkbox::before,
+table.dataTable tbody td.select-checkbox::after,
+table.dataTable tbody th.select-checkbox::before,
+table.dataTable tbody th.select-checkbox::after {
+  top: 50%;
+}
+
+.dataTables_length,
+.dataTables_filter,
+.dt-buttons {
+  margin-bottom: 0.333em;
+}
+
+.dt-buttons .btn {
+  margin-left: 0.333em;
+  border-radius: 4px;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc {
+  background-image: none;
+}
+
+.select2 {
+  width: 100%;
+}
+
+.searchable-title {
+  font-weight: bold;
+}
+
+.searchable-fields {
+  padding-left: 5px;
+}
+
+.searchable-link {
+  padding: 0 5px;
+}
+
+.searchable-link:hover {
+  cursor: pointer;
+  background: #eaeaea;
+}
+
+.select2-results__option,
+.select2-results__options li {
+  padding: 0 10px;
+}
+
+.form-group .required::after {
+  content: " *";
+  color: var(--required-color);
+}
+
+/* Updated Button Styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-text-color);
+  /* Ensuring contrast */
+  border-radius: 5px !important;
+}
+
+.btn-primary:hover {
+  color: var(--primary-text-color);
+  /* Ensuring contrast */
+  background-color: var(--hover-background) !important;
+  border-color: var(--hover-background) !important;
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+  border: 1px solid #79a6fe;
+}
+
+/* Updated Admin Panel Skin */
+.skin-purple .main-header .navbar,
+.skin-purple .main-header .logo {
+  background-color:#fff !important;
+}
+
+.skin-purple .main-header .navbar .sidebar-toggle:hover {
+  background-color: var(--hover-background) !important;
+}
+
+.skin-purple .main-header .navbar .nav>li>a {
+  color: var(--primary-text-color);
+  /* Text color for navbar items */
+}
+
+.skin-purple .main-header .logo .logo-lg,
+.skin-purple .main-header .logo .logo-mini {
+  color: var(--primary-text-color);
+}
+
+
+.bg-red,
+.callout.callout-danger,
+.alert-danger,
+.alert-error,
+.label-danger,
+.modal-danger .modal-body {
+  background-color: #ff9933 !important;
+}
+
+.skin-purple .wrapper,
+.skin-purple .main-sidebar,
+.skin-purple .left-side {
+  background-color: var(--dark-background) !important;
+}
+
+.skin-purple .sidebar a,
+.skin-purple .sidebar-menu>li:hover>a,
+.skin-purple .sidebar-menu>li.active>a,
+.skin-purple .sidebar-menu>li.menu-open>a {
+  color: #fff !important;
+}
+
+.skin-purple .sidebar-menu>li:hover>a,
+.skin-purple .sidebar-menu>li.menu-open>a {
+  background: #4a4a4a;
+}
+
+.skin-purple .sidebar-menu>li.active>a {
+  background: var(--hover-background);
+  color: var(--primary-text-color) !important;
+}
+
+.skin-purple .sidebar-menu>li.active>a,
+.nav-stacked>li.active>a,
+.nav-stacked>li.active>a:hover {
+  border-left-color: var(--primary-color) !important;
+}
+
+.buttons-copy:before,
+.buttons-csv:before,
+.buttons-excel:before,
+.buttons-pdf:before,
+.buttons-print:before {
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: 18px;
+  margin-left: 2px;
+}
+
+.buttons-copy:before {
+  content: "\f0c5";
+  color: #3366ff;
+}
+
+.buttons-csv:before {
+  content: "\f15c";
+  color: #00a651;
+}
+
+.buttons-excel:before {
+  content: "\f1c3";
+  color: #336633;
+}
+
+.buttons-pdf:before {
+  content: "\f1c1";
+  color: #ff6633;
+}
+
+.buttons-print:before {
+  content: "\f02f";
+  color: #66ccff;
+}
+
+.buttons-copy span,
+.buttons-csv span,
+.buttons-excel span,
+.buttons-pdf span,
+.buttons-print span {
+  font-size: 0;
+}
+
+div.dt-button-collection {
+  width: 28%;
+}
+
+div.dt-button-collection a {
+  margin: 4px 3px;
+  background: var(--primary-color);
+  color: var(--primary-text-color);
+  font-size: 13px;
+}
+
+div.dt-button-collection a:hover {
+  color: var(--primary-text-color) !important;
+  background: var(--hover-background);
+}
+
+.treeview-menu>li>a {
+  font-size: 13px;
+}
+
+/* Updated Pagination */
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover {
+  z-index: 3;
+  color: var(--primary-text-color);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.sidebar-menu>li>a {
+  padding: 10px 20px;
+  line-height: 1.87;
+  white-space: nowrap;
+  display: block;
+  width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.panel-default>.panel-heading {
+  color: #333;
+  background-color: #fff;
+  border-color: #ddd;
+  font-size: 19px;
+  border-top: 4px solid var(--primary-color);
+}
+
+.form-control {
+  height: 36px;
+  padding: 2px 6px;
+  border-radius: 4px !important;
+}
+
+.input-group .input-group-addon {
+  border-radius: 4px;
+}
+
+.box #daterange-btn {
+  border-radius: 4px 0 0 4px !important;
+}
+
+.box .input-group-addon {
+  border-radius: 0 4px 4px 0 !important;
+}
+
+.box .select2-container .select2-selection--single {
+  height: 33px;
+  border: 1px solid #d2d6de !important;
+}
+
+.box .select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: 0;
+  padding-top: 2px;
+  line-height: 23px !important;
+}
+
+.box label {
+  margin-bottom: 0;
+}
+
+.box.box-info,
+.box {
+  border-top: 3px solid var(--primary-color);
+}
+
+.nekr,
+.nav-tabs-custom>.nav-tabs>li.active {
+  border-top-color: var(--primary-color);
+}
+
+/* Updated Card Backgrounds */
+.cardbg-1,
+.cardbg-2,
+.cardbg-3,
+.cardbg-4,
+.cardbg-5,
+.cardbg-6,
+.cardbg-8 {
+  background: var(--primary-color) !important;
+  box-shadow: none !important;
+  border-radius: 10px;
+  padding: 31px 50px 31px 28px;
+  color: var(--primary-text-color);
+  font-size: 15px;
+}
+
+.cardbg-1 {
+  padding: 41px 50px 41px 28px;
+}
+
+.cardbg-1 h5 {
+  color: var(--primary-text-color) !important;
+}
+
+.caredoane .sweicon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  object-fit: contain;
+  height: 40px;
+  max-width: 40px;
+}
+
+#collect_cash {
+  background: var(--primary-color) !important;
+  color: var(--primary-text-color);
+  width: 100%;
+}
+
+.coenr-capitalize {
+  margin-bottom: 20px;
+}
+
+.mt-3 {
+  margin-top: 10px;
+}
+
+.mt-4 {
+  margin-top: 16px;
+  display: flex;
+  gap: 7px;
+}
+
+.panelnone {
+  margin-bottom: 0;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-text-color) !important;
+}
+
+.dataTables_wrapper .dataTables_scroll {
+  margin-bottom: 25px;
+}
+
+.box.none {
+  margin-bottom: 0;
+  box-shadow: none !important;
+}
+
+.newdpe {
+  display: flex;
+  gap: 10px;
+}
+
+.small-box {
+  border-radius: 4px;
+}
+
+select.input-sm {
+  height: 35px;
+  line-height: 30px;
+}
+
+.float-start {
+  text-align: right;
+  padding-top: 9px;
+}
+
+.input-addon {
+  display: none;
+  margin-bottom: 15px;
+}
+
+.input-addon input[type="text"] {
+  box-shadow: none;
+  border: 1px solid #ccc !important;
+  height: 31px;
+  width: 81%;
+}
+
+.pay-currency {
+  display: table-cell;
+  background-color: #edefed;
+  padding: 6px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.error {
+  color: var(--required-color);
+}
+
+.error-message {
+  color: var(--required-color);
+  font-size: 12px;
+}
+
+.input-group {
+  display: flex;
+}
+
+.input-group .form-control {
+  flex: 1;
+}
+
+.spinner,
+.custom-loader {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s ease infinite;
+}
+
+.custom-loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid var(--primary-color);
+  /* Updated loader color */
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fs-11 {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.fs-12 {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.fs-13 {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.fs-14 {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.fs-15 {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.fs-16 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.fs-17 {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.fs-18 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fs-19 {
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.fs-20 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.fs-21 {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.fs-22 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.fs-23 {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.fs-24 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.fs-25 {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.fs-26 {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.fs-27 {
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.fs-28 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.fs-29 {
+  font-size: 29px;
+  font-weight: bold;
+}
+
+.fs-30 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+#calendarID td,
+#calendarID th {
+  padding: 20px;
+}
+
+#calendarID .statusClass {
+  background-color: var(--required-color);
+}
+
+#calendarID .bookingClass {
+  background-color: green;
+  position: relative;
+}
+
+#calendarID #previousButton,
+#calendarID #nextButton {
+  border: 1px solid #ddd;
+  width: 46px;
+  height: 42px;
+  display: inline-block;
+  color: #000;
+  text-decoration: none;
+  line-height: 31px;
+  background: #fff;
+}
+
+#calendarID .calendar-date {
+  border: 1px solid #d4d4d4;
+  padding: 2px 5px;
+  height: 90px;
+  background-color: #dce0e0;
+  position: relative;
+}
+
+#calendarID .outercoor {
+  background: #fff;
+  border-radius: 0 0 3px 3px;
+  padding: 10px;
+}
+
+#calendarID #monthYearSelect {
+  font-size: 2rem;
+  border: 0;
+}
+
+#calendarID #monthYearSelect:focus {
+  outline: none;
+}
+
+#calendarID .dayNumber {
+  font-size: 13px;
+  color: #414141;
+  margin-left: 2px;
+}
+
+#calendarID .dayPrice {
+  position: absolute;
+  bottom: 9px;
+}
+
+#calendarID .table>tbody>tr>td,
+#calendarID .table>tfoot>tr>td {
+  border: 1px solid #d4d4d4;
+}
+
+#calendarID .bgred {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+#calendarID .bggreen {
+  background-color: #008000;
+  color: #fff;
+}
+
+#calendarID .bggreen .dayNumber,
+#calendarID .bgred .dayNumber {
+  color: #fff;
+}
+
+#calendarID .future-date {
+  background-color: #87ceeb;
+  cursor: pointer;
+}
+
+#calendarID .past-date {
+  opacity: 0.2;
+  background-color: #d3d3d3;
+}
+
+#calendarID .blank {
+  background-color: #e0e0e0 !important;
+}
+
+#calendarID .legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+#calendarID .legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 20px 10px 0;
+}
+
+#calendarID .legend-item span {
+  margin-left: 8px;
+}
+
+#calendarID .booked {
+  color: #008000;
+  font-size: 40px;
+}
+
+#calendarID .disabled {
+  color: #d3d3d3;
+  font-size: 40px;
+}
+
+#calendarID .open {
+  color: #87ceeb;
+  font-size: 40px;
+}
+
+#calendarID .not-selected {
+  color: #e0e0e0;
+  font-size: 40px;
+}
+
+#calendarID .not-available {
+  color: #ff0000;
+  font-size: 40px;
+}
+
+.homePagePanel {
+  min-height: 420px;
+}
+
+.no-result-found {
+  text-align: center;
+}
+
+.input-group-addon {
+  padding: 8px 23px 0 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.generate-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.btn-inactive {
+  background-color: #bbadab;
+  border-color: #a79a98;
+  color: #fff !important;
+}
+
+.item-image-size {
+  max-width: 50px;
+}
+
+.module-popup {
+  width: 320px;
+  height: 100%;
+  padding: 10px;
+}
+
+.module-header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.module-popup-body,
+.module-popup-items {
+  padding: 10px;
+}
+
+.module-name {
+  font-size: 12px;
+  padding: 10px;
+  color: #000;
+  text-align: center;
+}
+
+.module-image img {
+  width: 50px;
+}
+
+.module-popup-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.module-popup-item:hover,
+.module-popup-item.active {
+  background-color: var(--primary-color);
+}
+
+.module-popup-item:hover .module-name,
+.module-popup-item.active .module-name {
+  color: var(--primary-text-color);
+}
+
+.module-popup-item.active .module-name {
+  font-weight: bold;
+}
+
+.module-image {
+  padding-top: 20px;
+}
+
+.custom-col {
+  padding: 2px !important;
+}
+
+.logo-mini img {
+  width: 30px;
+}
+
+.logo-lg img {
+  height: 45px;
+}
+
+/* Updated Panel Styles */
+.panel-primary,
+.panel-primary>.panel-heading,
+.custom-panel>.panel-heading {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--primary-text-color);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.img-circle {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 40px;
+  height: 40px;
+}
+
+.img-circle_details {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 70px;
+  height: 70px;
+}
+
+.live-badge {
+  position: relative;
+  padding-left: 30px;
+}
+
+.live-dot {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--required-color);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+
+.car-type-animated {
+  padding: 8px;
+  color: #0369a1;
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+.car-type-animated div {
+  margin-bottom: 2px;
+}
+
+.pickup-address {
+  background-color: #e6f7ff;
+  color: #0050b3;
+  padding: 8px;
+  align-items: center;
+}
+
+.pickup-address i {
+  color: #1890ff;
+}
+
+.dropoff-address {
+  background-color: #fff1f0;
+  color: #07a812;
+  padding: 8px;
+  align-items: center;
+  gap: 6px;
+}
+
+.dropoff-address i {
+  color: #0c473d;
+}
+
+.table-icon {
+  color: #313c3e;
+  margin-right: 5px;
+}
+
+.data-cell .separator {
+  margin: 0 6px;
+  color: #6c757d;
+  user-select: none;
+}
+
+.dataTables_info,
+.paging_simple_numbers {
+  display: none;
+}
+
+.pagination.justify-content-end {
+  float: right;
+}
+
+.main-footer {
+  overflow: hidden;
+  margin-left: 0;
+}
+
+.sidebar li.active>a {
+  background-color: #222;
+  color: #fff;
+  font-weight: bold;
+}
+
+.sidebar li.active i {
+  color: #fff;
+}
+
+.custom-toggle {
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.custom-toggle .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 10px;
+}
+
+.custom-toggle .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-toggle .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.custom-toggle .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.custom-toggle input:checked+.slider {
+  background-color: var(--primary-color);
+}
+
+.custom-toggle input:focus+.slider {
+  box-shadow: 0 0 1px var(--primary-color);
+}
+
+.custom-toggle input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+.custom-toggle .toggle-label {
+  font-size: 14px;
+}
+
+.check {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.checktoggle {
+  background-color: rgba(115, 103, 240, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  font-size: 0;
+  height: 24px;
+  width: 48px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.checktoggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.check:checked+.checktoggle {
+  background-color: var(--primary-color);
+}
+
+.check:checked+.checktoggle::after {
+  left: calc(100% - 20px);
+}
+
+.disabled-span {
+  opacity: .1;
+}
+
+/* Updated Button Info Styles */
+.btn-info {
+  background-color: #495057;
+  /* dark slate gray */
+  border-color: #343a40;
+  /* darker gray border */
+  color: #ffffff;
+}
+
+.btn-info:hover {
+  background-color: #5a6268;
+  border-color: #495057;
+}
+
+/* Updated Nav Tab Styles */
+.nav.navbar-pills.nav-tabs.nav-stacked.no-margin li a:hover {
+  background-color: var(--dark-background);
+  color: #e7eced;
+  font-weight: bold;
+}
+
+.nav.navbar-pills.nav-tabs.nav-stacked.no-margin li.active a {
+  background-color: var(--dark-background);
+  color: #e7eced;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+/* --- Root Variables for Theme --- */
+:root {
+  --primary-color: #FFC91F;
+  --dark-bg: #212529;
+  --light-bg: #f8f9fa;
+  --white: #ffffff;
+  --text-dark: #333;
+  --text-light: #f8f9fa;
+  --border-color: #dee2e6;
+  --font-family: 'Poppins', sans-serif;
+}
+
+/* --- General Reset & Body --- */
+
+/* --- Main Login Section & Box --- */
+.login {
+  width: 100%;
+  padding: 20px;
+}
+
+.login_box {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+
+  margin: auto;
+  background: var(--white);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* --- Left Side (Form) --- */
+.left {
+  flex-basis: 50%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 40px;
+}
+
+.page-login .login-box {
+  width: 100%;
+
+}
+
+.login-box,
+.register-box {
+  width: 360px;
+  margin: 7% auto;
+  background: #fff;
+  /* padding: 10px; */
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.login-logo h2 {
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.login-logo p {
+
+  color: #6c757d;
+  margin-bottom: 30px;
+  font-size: 32px;
+}
+
+/* --- Form Elements Styling --- */
+.form-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+/* Using the original .form-control class */
+
+.login .form-control {
+  height: 50px;
+  padding: 10px 15px 10px 45px;
+  /* Added space for icon */
+}
+
+.form-control {
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(255, 201, 31, 0.3);
+}
+
+/* Styling the original .form-control-feedback */
+.form-control-feedback {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: auto;
+  width: auto;
+  line-height: 1;
+  color: #adb5bd;
+  text-align: left;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #adb5bd;
+  padding: 5px;
+}
+
+
+
+/* Creating a clean checkbox to appear in its place */
+.custom-checkbox-container {
+  font-size: 0.9rem;
+}
+
+.btn.btn-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Recaptcha */
+.g-recaptcha {
+  margin-bottom: 0px;
+  transform-origin: left;
+  transform: scale(1.04);
+}
+
+/* Submit Button */
+.btn-primary.btn-block {
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--dark-bg);
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary.btn-block:hover {
+  background-color: #e6b30f;
+  transform: translateY(-2px);
+}
+
+/* --- Demo Credentials --- */
+.copy-container {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #fef8e3;
+  border: 1px dashed #f0c340;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.copy-container span {
+  font-family: monospace;
+}
+
+.copy_cred {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+}
+
+/* --- Right Side (Branding) --- */
+.right {
+  flex-basis: 50%;
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.right-text img {
+
+  width: 40%;
+  margin-bottom: 40px;
+
+  border-radius: 50%;
+  padding: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.right-text h5 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+  .login_box {
+    flex-direction: column;
+    min-height: auto;
+    width: 95%;
+    max-width: 500px;
+  }
+
+  .right {
+    display: none;
+    /* Hide branding on mobile for a focused form experience */
+  }
+
+  .left {
+    flex-basis: 100%;
+    padding: 40px 30px;
+  }
+}
+
+
+.login-box,
+.register-box {
+  margin-top: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- Root Variables for Theme --- */
+:root {
+  --primary-color: #FFC91F;
+  --dark-text: #212529;
+  --secondary-text: #6c757d;
+  --border-color: #dee2e6;
+  --page-bg: #f4f7f6;
+  --card-bg: #ffffff;
+  --font-family: 'Poppins', sans-serif;
+}
+
+
+
+/* --- Input Field Container (.form-group) --- */
+.contact .form-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+/* --- Input Field Styling (.form-control) --- */
+.contact .form-control {
+  height: 52px;
+  width: 100%;
+  padding: 10px 15px 10px 45px;
+  /* Left padding for icon */
+  font-size: 14px;
+  color: var(--dark-text);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: #f8f9fa !important;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-sizing: border-box;
+}
+
+.contact .form-control::placeholder {
+  color: #999;
+}
+
+/* Focus state for the input field */
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: var(--card-bg);
+  box-shadow: 0 0 0 4px rgba(255, 201, 31, 0.25);
+}
+
+/* --- Icon Styling (using existing classes) --- */
+.contact .form-control-feedback {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary-text);
+  pointer-events: none;
+  text-align: left;
+  font-size: 20px;
+}
+
+.contact .toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--secondary-text);
+}
+
+/* --- Row for Checkbox & Link --- */
+.contact .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+}
+
+/* Styling the iCheck container and its label */
+.contact .icheck {
+  padding-left: 0;
+}
+
+.contact .icheck label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--secondary-text);
+}
+
+/* Hiding the complex iCheck generated div and styling the native checkbox */
+.contact .icheck .icheckbox_square-blue {
+  display: none;
+}
+
+.contact .icheck input[type="checkbox"] {
+  opacity: 1 !important;
+  /* Make native checkbox visible */
+  position: static !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 8px 0 0 !important;
+  accent-color: var(--primary-color);
+  /* Modern way to theme checkboxes */
+}
+
+/* --- Forgot Password Link --- */
+.contact .btn-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.contact .btn-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Login Button --- */
+.contact .btn.btn-primary.btn-block {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--dark-text);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.contact .btn.btn-primary.btn-block:hover {
+  background-color: #e6b30f;
+  /* Darker yellow */
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 201, 31, 0.4);
+}
+
+/* --- Demo Credentials Box --- */
+.contact .copy-container {
+  margin-top: 30px;
+  padding: 15px;
+  background-color: #fef8e3;
+  border: 1px dashed #f0c340;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  line-height: 29px;
+
+}
+
+.contact .copy_cred {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  position: absolute;
+  right: 19px;
+  width: 30px;
+  text-align: center;
+  left: auto;
+}
+
+
+
+
+
+.login-page .right {
+  background: #e6b30f !important
+}
+
+.login-box br {
+  display: none
+}
+
+
+.login-box-body,
+.register-box-body {
+  padding: 0px
+}
+
+
+/* --- Responsive Google reCAPTCHA Styling --- */
+
+/* 1. The main container that Google creates for the widget.
+      We give it a max-width to ensure it doesn't get too large and use
+      transform to scale it down. */
+.g-recaptcha {
+  max-width: 100%;
+  transform-origin: 0 0;
+  /* Anchors the scaling to the top-left corner */
+  transform: scale(0.9);
+  /* A good starting scale for slightly smaller containers */
+}
+
+iframe {
+  max-width: 100%;
+  transform-origin: 0 0;
+  /* Anchors the scaling to the top-left corner */
+  transform: scale(0.9);
+  /* A good starting scale for slightly smaller containers */
+}
+
+/* 2. Media Query for smaller mobile screens (e.g., iPhone 5/SE).
+      We scale it down even further to prevent it from overflowing. */
+@media (max-width: 320px) {
+  .g-recaptcha {
+    transform: scale(0.77);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: -15px;
+  margin-bottom: 20px;
+}
+
+.remember-me {
+  display: flex;
+  /* Aligns the checkbox and label nicely */
+  align-items: center;
+  gap: 8px;
+  /* Adds a small space between checkbox and text */
+}
+
+.remember-me label {
+  margin-bottom: 0;
+  /* Removes default bottom margin from the label */
+  cursor: pointer;
+}
+
+.forgot-password-link {
+  color: var(--primary-color);
+  /* Uses your theme's primary color */
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+
+
+.form-actions label {
+  padding-left: 0px !important;
+}
+
+.form-group.has-error .help-block {
+  position: absolute;
+}
+
+
+.drivers-card {
+  border-left: 4px solid #E6B51C !important;
+}
+
+.drivers-card {
+  background-color: #fff !important;
+}
+
+.main-header .logo .logo-lg {
+  background: #3a3a3a !important
+}
+
+.main-header .logo {
+  padding: 0px;
+}
+
+.skin-purple .sidebar-menu>li>.treeview-menu {
+  background: #000 !important;
+}
+.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody{overflow: hidden !important;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- 1. General Dropdown Styling (The White Card) --- */
+.navbar-nav > li > .dropdown-menu {
+    border-radius: 12px !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.15) !important;
+    border: none !important;
+    padding: 10px 0;
+    width: 300px; /* Width for Notification/SOS cards */
+    animation: fadeIn 0.2s;
+    left: auto;
+    right: 0;
+}
+
+/* Header inside dropdown (e.g. "Notifications", "Recent SOS") */
+.dropdown-menu-header {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    border-bottom: 1px dashed #eee;
+}
+
+/* --- 2. Empty State Styling (The Illustrations) --- */
+.empty-state-container {
+    padding: 10px 20px 24px 0px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state-img {
+    width: 100px; /* Adjust based on your actual image size */
+    height: auto;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.empty-state-text {
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* --- 3. Language Menu Specifics --- */
+.language-menu {
+    width: 200px !important;
+    padding: 5px 0;
+}
+
+.language-menu li a {
+    padding: 10px 20px !important;
+    color: #444 !important;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.language-menu li a:hover {
+    background-color: #f9fafb !important;
+    color: #000 !important;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+    margin-right: 12px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* --- 4. User Profile Dropdown Specifics --- */
+.user-menu-dropdown {
+    width: 180px !important;
+}
+
+.user-menu-dropdown li a {
+    padding: 12px 20px !important;
+    color: #555 !important;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.user-menu-dropdown li a i,
+.user-menu-dropdown li a svg {
+    margin-right: 15px;
+    font-size: 18px;
+    color: #666;
+}
+
+.user-menu-dropdown li a:hover {
+    background-color: #f3f4f6;
+    color: #000 !important;
+}
+
+/* Animation for smooth opening */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}/* Container alignment */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+/* Base style for the round buttons */
+.navbar-nav > li > a.icon-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #f3f4f6; /* Light grey background */
+    border-radius: 50%;        /* Makes it a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 5px;          /* Spacing between bubbles */
+    padding: 0 !important;     /* Reset default bootstrap padding */
+    color: #4b5563 !important; /* Icon color (Dark Grey) */
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+/* Hover effect */
+.navbar-nav > li > a.icon-btn:hover {
+    background-color: #e5e7eb;
+    color: #000 !important;
+}
+
+/* Font size for icons */
+.navbar-nav > li > a.icon-btn > i {
+    font-size: 16px;
+}
+
+/* User Menu Image styling */
+.navbar-nav > .user-menu > .dropdown-toggle {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+
+
+/* 1. Flex container to align everything in a row */
+.navbar-custom-menu .navbar-nav {
+        display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 3px;
+    padding: 6px 0px;
+}
+
+/* 2. The Round Gray Icon Button Style */
+.navbar-nav > li > a.icon-circle {
+    width: 42px;
+    height: 42px;
+    background-color: #f3f4f6; /* The light gray background */
+    border-radius: 50%;        /* Makes it a circle */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;             /* Spacing between bubbles */
+    padding: 0 !important;     /* Remove default padding */
+    color: #4b5563 !important; /* Dark gray icon color */
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.navbar-nav > li > a.icon-circle:hover,
+.navbar-nav > li.open > a.icon-circle {
+    background-color: #e5e7eb; /* Slightly darker on hover/open */
+    color: #000 !important;
+}
+
+/* 3. Text inside circles (like EN and SOS) */
+.navbar-nav > li > a.icon-circle.text-icon {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* 4. User Profile Styling */
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px !important;
+}
+.user-profile-link img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.user-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+.user-role {
+    color: #888;
+    font-size: 12px;
+}
+
+
+/* --- Open Dropdown on Hover --- */
+@media (min-width: 768px) {
+    /* Only apply hover effect on desktop/tablet, leave click for mobile */
+    .navbar-nav > li.dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
+/* Ensure the menu connects to the button so it doesn't close while moving the mouse */
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 0 !important;
+}
+
+
+
+
+/* =========================================
+   1. NAVBAR CONTAINER & RESET
+   ========================================= */
+.navbar-custom-menu {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-custom-menu .navbar-nav {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 0px; /* Space between icons */
+}
+
+/* =========================================
+   2. CIRCULAR ICON BUTTONS
+   ========================================= */
+.navbar-nav > li > a.icon-circle {
+    width: 42px;
+    height: 42px;
+    background-color: #f3f4f6; /* Light gray bg */
+    border-radius: 50%;        /* Perfect circle */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;     /* Reset AdminLTE padding */
+    color: #4b5563 !important; /* Dark gray icon */
+    font-size: 18px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+}
+
+/* Hover Effect */
+.navbar-nav > li > a.icon-circle:hover,
+.navbar-nav > li.open > a.icon-circle {
+    background-color: #fff;
+    color: #3b82f6 !important; /* Blue on hover */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px); /* Slight lift */
+}
+
+/* Text inside icons (EN, SOS) */
+.navbar-nav > li > a.icon-circle.text-icon {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* SOS Specific Color (Optional: Make SOS red on hover) */
+.navbar-nav > li > a.icon-circle[title="SOS"]:hover {
+    color: #ef4444 !important; /* Red */
+}
+
+/* =========================================
+   3. DROPDOWN MENUS (THE CARDS)
+   ========================================= */
+.navbar-nav > li > .dropdown-menu {
+    border-radius: 16px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #f3f4f6 !important;
+    padding: 0; /* Clean padding */
+    width: 320px;
+    left: auto !important;
+    right: 0 !important;
+    margin-top: 10px !important; /* Space from header */
+    transform-origin: top right;
+    animation: scaleIn 0.2s ease-out forwards;
+    display: none; /* Hidden by default */
+}
+
+/* OPEN ON HOVER LOGIC */
+@media (min-width: 768px) {
+    .navbar-nav > li.dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+
+    /* Invisible bridge so menu doesn't close when moving mouse down */
+    .navbar-nav > li.dropdown:after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+    }
+}
+
+/* Header inside Dropdown */
+.dropdown-menu-header {
+    background: #fff;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    border-bottom: 1px solid #f3f4f6;
+    border-radius: 16px 16px 0 0;
+}
+
+/* =========================================
+   4. EMPTY STATE (ILLUSTRATIONS)
+   ========================================= */
+.empty-state-container {
+   padding: 10px 20px 24px 0px;
+    text-align: center;
+    background: #fff;
+    border-radius: 0 0 16px 16px;
+}
+
+.empty-state-img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+    opacity: 0.9;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+}
+
+.empty-state-text {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* =========================================
+   5. SPECIFIC MENUS (Language & User)
+   ========================================= */
+/* Language Menu */
+.language-menu {
+    width: 200px !important;
+    padding: 8px 0;
+}
+
+.language-menu li a {
+    padding: 10px 20px !important;
+    color: #374151 !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.language-menu li a:hover {
+    background-color: #f9fafb !important;
+    color: #000 !important;
+}
+
+.flag-icon {
+    width: 22px;
+    height: 16px;
+    margin-right: 12px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* User Menu */
+.user-menu-dropdown {
+    width: 200px !important;
+    padding: 8px 0;
+}
+
+.user-menu-dropdown li a {
+    padding: 12px 20px !important;
+    color: #4b5563 !important;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.user-menu-dropdown li a:hover {
+    background-color: #f3f4f6;
+    color: #111 !important;
+}
+
+.user-menu-dropdown li a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+/* User Profile Link (The button in the navbar) */
+.user-profile-link {
+    display: flex !important;
+    align-items: center;
+    padding: 5px 10px !important;
+    border-radius: 30px;
+    transition: background 0.2s;
+    background: transparent;
+}
+
+.user-profile-link:hover {
+    background: #f3f4f6;
+}
+
+.user-profile-link img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-info-text {
+       display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.user-name {
+    font-weight: 700;
+    color: #374151;
+    font-size: 14px;
+}
+
+.user-role {
+    color: #374151;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Animation Keyframes */
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
+.navbar-nav>.user-menu .user-image {
+    float: left;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -2px;
+}
+
+
+
+
+
+
+
+
+
+/* =============================================
+   SIDEBAR DESIGN - Dark & Teal Theme
+   ============================================= */
+
+/* 1. Main Sidebar Background */
+.main-sidebar, .left-side {
+    background-color: #1b262c !important; /* Deep Dark Blue-Grey */
+    box-shadow: inset -1px 0 0 rgba(0,0,0,0.1);
+}
+
+/* 2. Remove default AdminLTE borders */
+.sidebar-menu > li {
+    border: none !important;
+    margin-bottom: 2px;
+}
+
+/* =============================================
+   TOP LEVEL LINKS (Dashboard, Platform Setup)
+   ============================================= */
+
+/* Default Link State */
+.sidebar-menu > li > a {
+    color: #b0bec5 !important; /* Light Grey Text */
+    background: transparent;
+    padding: 12px 20px;
+    font-weight: 500;
+    font-size: 14px;
+    border-left: 4px solid transparent; /* Prepare for hover border */
+    transition: all 0.3s ease;
+}
+
+/* Icons */
+.sidebar-menu > li > a > i {
+    width: 25px;
+    font-size: 16px;
+    margin-right: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+/* ---------------------------------------------
+   HOVER & ACTIVE STATE (The Green Design)
+   --------------------------------------------- */
+.sidebar-menu > li:hover > a,
+.sidebar-menu > li.active > a,
+.sidebar-menu > li.menu-open > a {
+    color: #ffffff !important;
+    background-color: #ffc91f !important; /* The Teal/Green Background */
+    border-left-color: #ffd962 !important; /* The Light Green Accent Bar */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sidebar-menu > li.active > a > i,
+.sidebar-menu > li:hover > a > i {
+    color: #ffffff;
+}
+
+/* =============================================
+   SUB-MENUS (Treeview / Dropdowns)
+   ============================================= */
+
+/* Submenu Container */
+.sidebar-menu .treeview-menu {
+    background-color: #ffc91f !important; /* Slightly Darker than main sidebar */
+    padding-left: 0;
+    margin-bottom: 5px;
+}
+
+/* Submenu Links */
+.sidebar-menu .treeview-menu > li > a {
+    padding: 10px 15px 10px 55px !important; /* Indent text */
+    font-size: 13px;
+    color: #78909c !important;
+    background: transparent !important;
+    border-left: none !important;
+    position: relative; /* For the lines */
+}
+
+/* Submenu Hover/Active */
+.sidebar-menu .treeview-menu > li.active > a,
+.sidebar-menu .treeview-menu > li > a:hover {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+/* Submenu Icon (The small dots) */
+.sidebar-menu .treeview-menu > li > a > i {
+    font-size: 10px; /* Make dots smaller */
+    width: auto;
+    margin-right: 8px;
+    display: none; /* Hide default icon to use lines instead */
+}
+
+/* =============================================
+   THE VERTICAL TREE LINES (Hierarchy Design)
+   ============================================= */
+
+/* The long vertical line container */
+.sidebar-menu .treeview-menu > li {
+    position: relative;
+    margin: 0;
+}
+
+/* Vertical Line */
+.sidebar-menu .treeview-menu > li::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 28px; /* Adjust line position */
+    border-left: 1px solid #37474f; /* Dark grey line color */
+}
+
+/* Horizontal Line (Connector) */
+.sidebar-menu .treeview-menu > li::after {
+    content: "";
+    position: absolute;
+    top: 20px; /* Vertically center */
+    left: 28px;
+    width: 15px; /* Length of horizontal line */
+    border-top: 1px solid #37474f;
+}
+
+/* Fix: Remove bottom part of vertical line for the last item */
+.sidebar-menu .treeview-menu > li:last-child::before {
+    height: 20px; /* Cut off line at the connector */
+}
+
+/* Active Submenu Text Indicator */
+.sidebar-menu .treeview-menu > li.active > a::before {
+    content: ""; /* Add a dot for active submenu items */
+    position: absolute;
+    left: 42px; /* Position at end of line */
+    color: #4db6ac;
+    font-size: 10px;
+    top: 8px; display:none;
+}
+
+/* =============================================
+   HEADERS (e.g. "HOME", "USER MANAGEMENT")
+   ============================================= */
+.sidebar-menu .header {
+    color: #546e7a;
+    background: #1b262c;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 20px 5px 20px;
+    border-bottom: 1px solid #263238;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================
+   DASHBOARD CARDS - CLEAN DESIGN
+   ========================================= */
+
+/* 1. The Main Card Container */
+.dashboard-card {
+    background: #ffffff;
+    border-radius: 16px; /* Rounded corners */
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden; /* Clips the background decoration */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 24px;
+    height: 140px; /* Fixed height for consistency */
+    text-align: left !important; /* Force text to align left */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* 2. Background Circle Decoration (The "Swoosh") */
+.dashboard-card::after {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    right: -30px;
+    top: -20px;
+    z-index: 1;
+    opacity: 0.15; /* Subtle background color */
+}
+
+/* 3. The Number (H4) */
+.dashboard-card h4 {
+    font-size: 18px!important;
+    font-weight: 700;
+    color: #1f2937; /* Dark text */
+    margin: 0 0 5px 0;
+    position: relative;
+    z-index: 2;
+    line-height: 1;
+}
+
+/* 4. The Label (P) */
+.dashboard-card p {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280; /* Grey text */
+    margin: 0;
+    position: relative;
+    z-index: 2;
+    text-transform: capitalize;
+}
+
+/* 5. The Icon (i) - Moved to Right Side */
+.dashboard-card i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%); /* Vertically center */
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff; /* White icon */
+    font-size: 26px;
+    z-index: 5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 6. The "More Info" Link */
+.dashboard-card .card-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-card .card-link i {
+    /* Reset the icon styles for the small arrow inside the link */
+    position: static;
+    transform: none;
+    width: auto;
+    height: auto;
+    background: transparent !important;
+    color: inherit;
+    font-size: 14px;
+    margin-left: 5px;
+    box-shadow: none;
+}
+
+
+
+
+
+
+
+/* =========================================
+   COLOR VARIATIONS (Matching the Screenshot)
+   ========================================= */
+
+/* CARD 1: GREEN (Default) - "Total Riders" look */
+.col-md-3:nth-of-type(1) .dashboard-card i {
+    background-color: #10b981; /* Green Icon Bg */
+}
+.col-md-3:nth-of-type(1) .dashboard-card::after {
+    background-color: #10b981; /* Light Green Blob */
+}
+.col-md-3:nth-of-type(1) .dashboard-card .card-link {
+    color: #10b981;
+}
+
+/* CARD 2: YELLOW - "Verified Drivers" look */
+.col-md-3:nth-of-type(2) .dashboard-card i {
+    background-color: #f59e0b; /* Yellow Icon Bg */
+}
+.col-md-3:nth-of-type(2) .dashboard-card::after {
+    background-color: #f59e0b;
+}
+.col-md-3:nth-of-type(2) .dashboard-card .card-link {
+    color: #f59e0b;
+}
+
+/* CARD 3: ORANGE - "Unverified Drivers" look */
+.col-md-3:nth-of-type(3) .dashboard-card i {
+    background-color: #f97316; /* Orange Icon Bg */
+}
+.col-md-3:nth-of-type(3) .dashboard-card::after {
+    background-color: #f97316;
+}
+.col-md-3:nth-of-type(3) .dashboard-card .card-link {
+    color: #f97316;
+}
+
+/* CARD 4: BLUE/GREY - "Rides" look */
+.col-md-3:nth-of-type(4) .dashboard-card i {
+    background-color: #64748b; /* BlueGrey Icon Bg */
+}
+.col-md-3:nth-of-type(4) .dashboard-card::after {
+    background-color: #64748b;
+}
+.col-md-3:nth-of-type(4) .dashboard-card .card-link {
+    color: #64748b;
+}
+
+/* CARD 5 & Others (Revenue/Income): Use Green/Blue Mix */
+.col-md-3:nth-of-type(n+5) .dashboard-card i {
+    background-color: #0ea5e9; /* Light Blue */
+}
+.col-md-3:nth-of-type(n+5) .dashboard-card::after {
+    background-color: #0ea5e9;
+}
+.col-md-3:nth-of-type(n+5) .dashboard-card .card-link {
+    color: #0ea5e9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. Define the Spin Animation */
+@keyframes spinDashedRing {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 2. Create the Ring (Hidden by default) */
+.dashboard-card i::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Start centered, slightly small, and invisible */
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 70px;  /* 15px larger than the icon */
+    height: 70px;
+    border-radius: 50%;
+    border: 2px dashed; /* The dashed line */
+    opacity: 0;         /* Hidden */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+/* 3. ON MOUSE OVER: Show and Spin */
+.dashboard-card:hover i.icon::after {
+    opacity: 1; /* Show it */
+    transform: translate(-50%, -50%) scale(1); /* Zoom it to full size */
+    animation: spinDashedRing 4s linear infinite; /* Start spinning */
+}
+
+/* =========================================
+   COLOR MAPPING (To match the icon colors)
+   ========================================= */
+
+/* Card 1: Green Ring */
+.col-md-3:nth-of-type(1) .dashboard-card i::after { border-color: #10b981; }
+
+/* Card 2: Yellow Ring */
+.col-md-3:nth-of-type(2) .dashboard-card i::after { border-color: #f59e0b; }
+
+/* Card 3: Orange Ring */
+.col-md-3:nth-of-type(3) .dashboard-card i::after { border-color: #f97316; }
+
+/* Card 4: Blue/Grey Ring */
+.col-md-3:nth-of-type(4) .dashboard-card i::after { border-color: #64748b; }
+
+/* Others: Light Blue Ring */
+.col-md-3:nth-of-type(n+5) .dashboard-card i::after { border-color: #0ea5e9; }
+
+
+.navbar-custom-menu>.navbar-nav>li a:hover{ color:#000!important}
+
+
+
+
+
+
+
+
+
+
+
+
+.main-header .logo .logo-lg {
+    display: block;
+    text-align: left;
+    padding-left: 21px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- 1. The Button Style --- */
+.btn-quick-links {
+    background-color: #ffca3b; /* Mint Green Background */
+    color: #000;            /* Dark Green Text */
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between text and + icon */
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-quick-links:hover {
+    background-color: #f59e0b;
+}
+
+.btn-quick-links i {
+    font-size: 12px;
+}
+
+/* --- 2. The Dropdown Menu Container --- */
+.quick-links-menu {
+    width: 320px; /* Fixed width for the card */
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-top: 10px;
+    background: #fff;
+    left: 0;
+    /* Ensure it sits on top */
+    z-index: 1000;
+}
+
+/* --- 3. Header Section --- */
+.ql-header {
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    border-bottom: 1px dashed #e5e7eb; /* Dashed line under title */
+}
+
+/* --- 4. The Grid Layout --- */
+.ql-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Individual Item Link */
+.ql-item {
+    width: 50%; /* 2 items per row */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 10px;
+    text-decoration: none !important;
+    color: #333;
+    border-bottom: 1px dashed #e5e7eb; /* Bottom border for all */
+    box-sizing: border-box;
+    transition: background-color 0.2s;
+}
+
+/* Right Border for odd items (1, 3, 5...) to create the vertical divider */
+.ql-item:nth-child(odd) {
+    border-right: 1px dashed #e5e7eb;
+}
+
+/* Remove bottom border for the last two items if you want it perfectly flush */
+.ql-item:nth-last-child(1),
+.ql-item:nth-last-child(2) {
+    border-bottom: none;
+}
+
+.ql-item:hover {
+    background-color: #f9fafb;
+}
+
+.ql-item span {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #111;
+}
+
+/* --- 5. The Icon Circle --- */
+.ql-icon-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #f9d890; /* Light Grey BG */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563; /* Dark Grey Icon */
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+/* Icon Hover Animation */
+.ql-item:hover .ql-icon-circle {
+    transform: scale(1.1);
+    background-color: #f5b632; /* Slight color shift on hover */
+    color: #fff; /* Brand color on hover */
+}
+
+
+.quick-links-container{position: absolute;
+    left: 32px;
+    margin-top: 5px;}
+
+
+	.main-header .sidebar-toggle{padding: 21px 15px 12px 15px;}
+
+
+	.skin-purple .main-header .navbar .sidebar-toggle {
+    color: #000;
+    font-size: 27px;
+    position: absolute;
+    top: -11px;
+}
+
+
+.logo-lg span{ font-size: 20px;
+    color: #fff;
+    line-height: 20px;
+    position: absolute;
+    top: 18px;
+    left: 75px;}
+
+
+/* =========================================
+   OPEN ON HOVER LOGIC
+   ========================================= */
+
+/* 1. Force display block on hover of the container */
+.quick-links-container:hover .quick-links-menu {
+    display: block;
+    animation: fadeInUp 0.2s ease-out forwards;
+}
+
+/* 2. Remove the default margin gap so the mouse can travel to the menu */
+.quick-links-menu {
+    margin-top: 0 !important;
+}
+
+/* 3. Optional: Add an invisible 'bridge' so the menu doesn't close
+   if there is a small gap between the button and the card */
+.quick-links-container {
+    padding-bottom: 10px; /* Extends the hover area slightly downwards */
+    display: inline-block;
+
+}
+
+/* 4. Smooth Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+     /* Container for the whole header */
+        .admin-header {
+            padding: 10px 0px;
+        }
+
+        /* Left Side Greeting */
+        .greeting-text h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .greeting-text p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Right Side Sort Box Styling */
+        .sort-pill-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 8px 15px;
+            /* Using display table/table-cell to align label and select horizontally */
+            display: inline-block;
+            min-width: 250px;
+            margin-top: 5px;display: flex;
+        }
+
+        .sort-label {
+            display: inline-block;
+            color: #6c757d;
+            font-weight: 500;
+            margin-right: 15px; line-height:30px;
+            vertical-align: middle;line-height: 39px;
+        }
+
+        /* Styling the dropdown to match the image */
+        .select-styled {
+            display: inline-block;
+            width: auto;
+            min-width: 140px;
+            background-color: #f8f9fa;
+            border: none;
+            border-radius: 6px;
+            height: 30px;
+            padding: 2px 10px;
+            font-size: 13px;
+            vertical-align: middle;
+            cursor: pointer;padding-bottom: 28px;
+        }
+
+        /* Clearfix to handle floated elements */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		.empty-state-container {
+    text-align: center;
+    padding: 10px 20px 24px 0px;
+    background-color: transparent;
+    font-family: 'Poppins', sans-serif;
+}
+
+.illustration-wrapper {
+    max-width: 450px;
+    margin: 0 auto 20px;
+}
+
+.empty-title {
+    color: #333;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.empty-subtitle {
+    color: #888;
+    font-size: 14px;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Floating Animation for Question Marks */
+.q-marks {
+    animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Entrance fade-in for the whole container */
+.empty-state-container {
+    animation: fadeInScale 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Container for the sliding effect */
+.sliding-paragraph-box {
+    height: 22px; /* Height of one line */
+    overflow: hidden;
+    position: relative;
+}
+
+/* The wrapper that moves */
+.sliding-inner {
+    display: block;
+    animation: verticalSlide 8s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+
+.sliding-inner p {
+    margin: 0;
+    line-height: 22px;
+    height: 22px;
+    color: #777;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/*
+   Animation Logic:
+   0-45%: Show 1st sentence
+   50-95%: Show 2nd sentence
+   100%: Reset
+*/
+@keyframes verticalSlide {
+    0%, 45% {
+        transform: translateY(0);
+    }
+    50%, 95% {
+        transform: translateY(-22px); /* Moves up by the height of 1 line */
+    }
+    100% {
+        transform: translateY(-44px); /* Moves to the 3rd (cloned) item */
+    }
+}
+
+/* Optional: Pause on hover so the user can read it */
+.sliding-paragraph-box:hover .sliding-inner {
+    animation-play-state: paused;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width:767px) {
+
+
+
+.pull-right{ float:none!important}
+.quick-links-container{ display:none}
+.admin-header{ padding-top:20px;}
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- 1. ENTRANCE ANIMATION (Waterfall Effect) --- */
+.navbar-nav > li {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: entranceFade 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+/* Delay for each icon to come one by one */
+.navbar-nav > li:nth-child(1) { animation-delay: 0.1s; }
+.navbar-nav > li:nth-child(2) { animation-delay: 0.2s; }
+.navbar-nav > li:nth-child(3) { animation-delay: 0.3s; }
+.navbar-nav > li:nth-child(4) { animation-delay: 0.4s; }
+.navbar-nav > li:nth-child(5) { animation-delay: 0.5s; }
+.navbar-nav > li:nth-child(6) { animation-delay: 0.6s; }
+.navbar-nav > li:nth-child(7) { animation-delay: 0.7s; }
+.navbar-nav > li:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes entranceFade {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 2. PREMIUM HOVER POP --- */
+.icon-circle {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+.icon-circle:hover {
+    transform: scale(1.15) rotate(5deg);
+    background-color: #fff !important;
+    box-shadow: 0 10px 20px rgba(255, 201, 31, 0.25) !important;
+}
+
+/* --- 3. SOS NEON PULSE --- */
+/* Target the SOS circle specifically */
+li:has(a.text-icon:contains('SOS')) a.icon-circle,
+a[title="SOS"] {
+    position: relative;
+    animation: sosGlow 2s infinite !important;
+}
+
+@keyframes sosGlow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 201, 31, 0.4); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 201, 31, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 201, 31, 0); }
+}
+
+/* --- 4. DROPDOWN SMOOTH OPEN --- */
+.dropdown-menu {
+    display: block !important;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.dropdown.open .dropdown-menu,
+.dropdown:hover .dropdown-menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* --- 5. FLOATING ELEMENTS (Already in your SVG) --- */
+.q-marks {
+    animation: floatUpDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --- 6. RING ANIMATION REFINED --- */
+@keyframes ring {
+  0%, 100% { transform: rotate(0); }
+  10%, 30% { transform: rotate(15deg); }
+  20%, 40% { transform: rotate(-15deg); }
+  50% { transform: rotate(0); }
+}
+
+/* Apply ring only on notification and chat icons */
+.fa-bell-o, .fa-comment-o {
+    animation: ring 4s ease-in-out infinite;
+    display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Container alignment */
+.empty-state-container {
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state-text {
+    color: #888;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Floating Animation */
+.chat-animation .bubble-1 {
+    animation: float1 3s ease-in-out infinite;
+}
+
+.chat-animation .bubble-2 {
+    animation: float2 3s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+/* Entrance Animation for the whole SVG */
+.chat-animation {
+    animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+
+
+
+
+.dashboard-content {
+    padding: 20px 0;
+    background-color: #fff!important;
+}
+
+
+.main-footer a{ font-weight:bold; color:#000}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. The Main Box */
+.select-styled {
+    background-color: #f8f9fa; /* Light gray background */
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 8px 15px;
+    width: 200px; /* Adjust as needed */
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none !important; padding-bottom:27px;
+}
+
+.select-styled:hover, .open > .select-styled {
+    background-color: #fff;
+    border-color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.chevron-icon {
+    font-size: 10px;
+    margin-top: 5px;
+    color: #777;
+}
+
+/* 2. The Dropdown List */
+.select-dropdown-list {
+    width: 100%;
+    min-width: 200px;
+    border-radius: 8px !important;
+    border: 1px solid #eee !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    margin-top: 5px !important;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+/* 3. Individual Items */
+.select-dropdown-list li a {
+    padding: 10px 15px !important;
+    font-size: 14px;
+    color: #444 !important;
+    border-bottom: 1px solid #f9f9f9;
+}
+
+/* Hover Effect */
+.select-dropdown-list li a:hover {
+    background-color: #f4f4f4 !important;
+}
+
+/* Active/Selected State (The Green Highlight in your image) */
+.select-dropdown-list li a:hover {
+    background-color: #ffca3b !important; /* Very light teal/mint */
+    color: #fff !important;           /* Darker teal text */
+
+}
+
+
+.select-dropdown-list li.active {
+    background-color: #ffca3b !important; /* Very light teal/mint */
+    color: #fff !important;           /* Darker teal text */
+
+}
+
+
+/* 4. Custom Scrollbar Styling (Matches your image) */
+.select-dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+.select-dropdown-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.select-dropdown-list::-webkit-scrollbar-thumb {
+    background: #d1d5db; /* Light gray thumb */
+    border-radius: 10px;
+}
+.select-dropdown-list::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. Center align all table cells vertically */
+.dashboard-panel .table tbody tr td {
+    vertical-align: middle !important;
+    white-space: nowrap; /* Prevents text from breaking into two lines */
+    padding: 15px 10px;  /* Adds some breathing room like in the image */
+}
+
+/* 2. Align images and text inside the cells */
+.dashboard-panel .table td a {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+}
+
+.dashboard-panel .table td img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    margin-right: 10px;
+
+    object-fit: cover;
+}
+
+/* 3. Style the badge to match your image (Dark Rounded Pill) */
+.dashboard-panel .badge-info {
+
+
+    padding: 6px 15px;
+    border-radius: 50px; /* Makes it a pill shape */
+    font-weight: 600;
+    font-size: 12px;
+}
+
+
+.greeting-text{margin-top: 8px;}
+
+
+
+
+
+
+html.dark-mode {
+  --primary-text-color: #e5e7eb;
+  --secondary-color: #0b1220;
+  --hover-background: #2a2f3a;
+  --dark-background: #0b1220;
+}
+
+html.dark-mode .skin-purple .main-header .navbar,
+html.dark-mode .skin-purple .main-header .logo {
+  background-color: #0b1220 !important;
+}
+
+html.dark-mode .skin-purple .main-sidebar,
+html.dark-mode .skin-purple .left-side,
+html.dark-mode .skin-purple .wrapper {
+  background-color: #0b1220 !important;
+}
+
+html.dark-mode .content-wrapper,
+html.dark-mode .right-side,
+html.dark-mode .main-footer {
+  background-color: #0f172a !important;
+  color: #e5e7eb !important;
+}
+
+html.dark-mode .skin-purple .sidebar a,
+html.dark-mode .skin-purple .sidebar-menu > li > a,
+html.dark-mode .skin-purple .main-header .navbar .nav > li > a {
+  color: #e5e7eb !important;
+}
+
+html.dark-mode .panel,
+html.dark-mode .panel-default > .panel-heading,
+html.dark-mode .box,
+html.dark-mode .box-header,
+html.dark-mode .modal-content,
+html.dark-mode .dropdown-menu {
+  background-color: #0b1220 !important;
+  color: #e5e7eb !important;
+  border-color: #cd660e !important;
+}
+
+html.dark-mode .table > thead > tr > th,
+html.dark-mode .table > tbody > tr > td {
+  background-color: #0b1220 !important;
+  color: #e5e7eb !important;
+  border-color: #1f2937 !important;
+}
+
+html.dark-mode .form-control,
+html.dark-mode input,
+html.dark-mode select,
+html.dark-mode textarea {
+  background-color: #111827 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}

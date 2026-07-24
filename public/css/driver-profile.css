@@ -1,0 +1,228 @@
+
+
+.driver-profile-page {
+  font-family: var(--font-family);
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: 30px;
+  position: relative;
+}
+
+.profile-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+}
+
+.avatar-section {
+  text-align: center;
+  padding-bottom: 25px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 25px;
+}
+
+.avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-name {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.profile-username {
+  font-size: 17px;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+}
+
+.sections-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.section {
+  flex: 1;
+  min-width: 300px;
+  padding: 0 var(--padding) 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-light);
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--primary-color);
+}
+
+.info-item {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #546e7a;
+  margin-right: 10px;
+  min-width: 140px;
+}
+
+.info-value {
+  color: #37474f;
+}
+
+.verification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px var(--padding);
+  background: #f9f9f9;
+  border-radius: var(--border-radius);
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.verification-item:hover {
+  background: #f2f9f2;
+  transform: translateX(3px);
+}
+
+.verification-label {
+  color: #455a64;
+  font-weight: 500;
+}
+
+.verified-badge,
+.unverified-badge {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.verified-badge {
+  background: var(--primary-color);
+  box-shadow: 0 2px 5px rgba(76,175,80,0.3);
+}
+
+.unverified-badge {
+  background: #f44336;
+  box-shadow: 0 2px 5px rgba(244,67,54,0.3);
+}
+
+.vehicle-card {
+  border: 1px solid #e0e0e0;
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  margin-bottom: var(--padding);
+  background: #f9fafb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  margin-right: 10px;
+    padding: 10px;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.driver-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.driver-header .title {
+  background: #111112;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.driver-header .actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.driver-header .btn {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border: 1px solid;
+  border-radius: var(--border-radius);
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-green { color: #28a745; border-color: #28a745; }
+.btn-red { color: #dc3545; border-color: #dc3545; }
+.btn-orange { color: #fd7e14; border-color: #fd7e14; }
+.btn-gray { color: #6c757d; border-color: #ced4da; }
+
+.driver-header .btn:hover {
+  background: #f1f1f1;
+}
+
+@media (max-width: 991px) {
+  .sections-container {
+    flex-direction: column;
+  }
+  .section {
+    padding: 0 0 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .section:last-child {
+    border-bottom: none;
+  }
+}
+  .document-img {
+        width: 100px;
+        height: auto;
+        border-radius: 5px;
+    }

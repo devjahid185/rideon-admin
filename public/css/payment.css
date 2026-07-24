@@ -1,0 +1,121 @@
+.icons-payment {
+    text-align: center;
+    width: 92%;
+    margin-top: 40px;
+    margin: 0 0px;
+    background: #fff;
+    box-shadow: 1px 1px 5px #ccc;
+    margin: 0 auto;
+}
+
+.icons-payment ul {
+    margin: 0;
+    padding: 0
+}
+
+.icons-payment ul li {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1p;
+    margin-bottom: 8px;
+    border-radius: 0px;
+    /* box-shadow:1px 1px 7px #ccc; */
+    padding: 7px 0
+}
+
+.btn {
+    box-shadow: 1px 1px 7px #ccc;
+    font-size: 26px;
+    padding: 13px 0;
+    border-radius: 8px;
+    font-weight: 700
+}
+
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite
+}
+
+.loader-text {
+    color: #fff;
+    margin-top: 10px
+}
+
+
+ .icons-payment ul li img{ max-width:100%; height:auto;}
+  
+  h2{font-size: 23px;
+    background: #000;
+    color: #fff;
+    padding: 5px 0px 10px 0px;
+    margin-bottom: 0px !important;
+    margin-top: 30px;}
+	
+	
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+.loader-text {
+    color: #fff;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+  
+  .icons-payment ul li img{ max-width:100%; height:auto;}
+  
+body h2.mb-4 {
+  font-size: 23px;
+    background: #000;
+    color: #fff;
+    padding: 5px 0px 10px 0px;
+    margin-bottom: 0px !important;
+    margin-top: 30px;
+    margin-bottom: 0px !important;
+    border-radius: 6px 6px 0px 0px;
+}
+	
+	
+	.icons-payment ul li.noinel img{width: 95%;
+    background: no-repeat;
+    margin-top: -20px;}
