@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\FoodOrderController;
 use App\Http\Controllers\Admin\FoodCatalogController;
 use App\Http\Controllers\Admin\GeneralSettingController;
+use App\Http\Controllers\Admin\RestaurantOwnerController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -198,6 +199,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('food-catalog/addons', [FoodCatalogController::class, 'storeAddon'])->name('food-catalog.addons.store');
     Route::post('food-catalog/addons/{id}', [FoodCatalogController::class, 'updateAddon'])->name('food-catalog.addons.update');
     Route::post('food-catalog/addons/{id}/delete', [FoodCatalogController::class, 'deleteAddon'])->name('food-catalog.addons.delete');
+    Route::get('restaurant-owners', [RestaurantOwnerController::class, 'index'])->name('restaurant-owners.index');
+    Route::get('restaurant-owners/{owner}', [RestaurantOwnerController::class, 'show'])->name('restaurant-owners.show');
+    Route::post('restaurant-owners/{owner}', [RestaurantOwnerController::class, 'update'])->name('restaurant-owners.update');
+    Route::post('restaurant-owners/{owner}/password', [RestaurantOwnerController::class, 'updatePassword'])->name('restaurant-owners.password');
+    Route::post('restaurant-owners/{owner}/toggle-status', [RestaurantOwnerController::class, 'toggleStatus'])->name('restaurant-owners.toggle-status');
     Route::get('customerItem', 'BookingController@customerItem')->name('customerItem');
     Route::get('overview/{booking}', 'Driver\AppDriverController@driverProfileView')->name('overview');
     Route::get('item/{booking}', 'BookingController@items')->name('item');
@@ -367,6 +373,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
         // Email settings
         Route::get('settings/email', 'emailSetting')->name('email');
+        Route::post('settings/email', 'emailSettingUpdate')->name('email.update');
+        Route::post('settings/email/test', 'emailSettingTest')->name('email.test');
 
         // Fees
         Route::get('settings/fees', 'fees')->name('fees');

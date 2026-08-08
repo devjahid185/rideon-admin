@@ -264,6 +264,12 @@
                                 <span>Food Orders</span>
                             </a>
                         </li>
+                        <li class="{{ request()->is('admin/restaurant-owners') || request()->is('admin/restaurant-owners/*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.restaurant-owners.index') }}">
+                                <i class="fas fa-dot-circle"></i>
+                                <span>Restaurant Owners</span>
+                            </a>
+                        </li>
                         <li class="treeview {{ request()->is('admin/food-catalog') || request()->is('admin/food-catalog/*') ? 'active' : '' }}">
                             <a href="#">
                                 <i class="fas fa-dot-circle"></i>

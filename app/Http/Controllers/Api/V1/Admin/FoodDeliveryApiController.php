@@ -31,7 +31,6 @@ class FoodDeliveryApiController extends Controller
             'longitude' => 'nullable|numeric',
             'longtitude' => 'nullable|numeric',
             'radius_km' => 'nullable|numeric|min:1|max:30',
-            'limit' => 'nullable|integer|min:1|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -45,13 +44,11 @@ class FoodDeliveryApiController extends Controller
         }
         $lng = (float) $lngRaw;
         $radiusKm = (float) $request->input('radius_km', 8);
-        $limit = (int) $request->input('limit', 20);
 
         Log::info('Food nearby restaurants request', [
             'latitude' => $lat,
             'longitude' => $lng,
             'radius_km' => $radiusKm,
-            'limit' => $limit,
         ]);
 
         try {
@@ -96,7 +93,6 @@ class FoodDeliveryApiController extends Controller
                     return (float) $branch->distance_km <= max($radiusKm, $branchRadius);
                 })
                 ->sortBy('distance_km')
-                ->take($limit)
                 ->values();
         } catch (\Throwable $e) {
             Log::error('Food nearby restaurants query failed', [
@@ -351,30 +347,62 @@ class FoodDeliveryApiController extends Controller
             ->with(['restaurant:id,name,logo_image', 'branch:id,restaurant_id,name,address', 'driver:id,first_name,last_name,phone,phone_country'])
             ->latest('id');
 
-        if (strtolower((string) $user->user_type) === 'driver') {
+        $requestedUserType = strtolower((string) $request->input('user_type', ''));
+        $isDriverContext = $requestedUserType === 'driver' ||
+            ($requestedUserType === '' && strtolower((string) $user->user_type) === 'driver');
+
+        if ($isDriverContext) {
             // Drivers may only see food orders assigned to them in their history.
             // Unassigned work is exposed separately through the available-orders API.
             $query->where('driver_id', $user->id);
         } else {
-            $query->where('user_id', $user->id);
+            $email = trim((string) ($user->email ?? ''));
+            $phone = trim((string) ($user->phone ?? ''));
+            $phoneCountry = trim((string) ($user->phone_country ?? ''));
+
+            $query->where(function ($customerQuery) use ($user, $email, $phone, $phoneCountry) {
+                $customerQuery->where('user_id', $user->id);
+
+                if ($email !== '') {
+                    $customerQuery->orWhere('customer_email', $email);
+                }
+
+                if ($phone !== '') {
+                    $customerQuery->orWhere(function ($phoneQuery) use ($phone, $phoneCountry) {
+                        $phoneQuery->where('customer_phone', $phone);
+
+                        if ($phoneCountry !== '') {
+                            $phoneQuery->where(function ($countryQuery) use ($phoneCountry) {
+                                $countryQuery
+                                    ->where('customer_phone_country', $phoneCountry)
+                                    ->orWhereNull('customer_phone_country')
+                                    ->orWhere('customer_phone_country', '');
+                            });
+                        }
+                    });
+                }
+            });
         }
 
         if ($request->filled('status')) {
             $query->where('status', $request->input('status'));
         }
 
-        $limit = (int) $request->input('limit', 100);
-        $orders = $query->limit($limit)->get();
+        $orders = $query->get();
         $orders->each(fn (FoodOrder $order) => $this->hideDeliveryOtpUnlessCustomer($order, $user));
 
         Log::info('Food user orders response', [
             'user_id' => $user->id,
             'status_filter' => $request->input('status'),
-            'limit' => $limit,
             'count' => $orders->count(),
             'order_ids' => $orders->pluck('id')->values()->all(),
             'order_numbers' => $orders->pluck('order_number')->values()->all(),
             'customer_order_ids' => $orders->where('user_id', $user->id)->pluck('id')->values()->all(),
+            'snapshot_order_ids' => $orders
+                ->filter(fn (FoodOrder $order) => (int) $order->user_id !== (int) $user->id)
+                ->pluck('id')
+                ->values()
+                ->all(),
             'driver_order_ids' => $orders->where('driver_id', $user->id)->pluck('id')->values()->all(),
         ]);
 
@@ -387,7 +415,6 @@ class FoodDeliveryApiController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'radius_km' => 'nullable|numeric|min:1|max:30',
-            'limit' => 'nullable|integer|min:1|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -406,21 +433,19 @@ class FoodDeliveryApiController extends Controller
             return $this->addErrorResponse(403, 'Only driver can access available food orders', null);
         }
 
-        $limit = (int) $request->input('limit', 20);
         $orders = FoodOrder::query()
             ->with(['restaurant:id,name,logo_image', 'branch:id,restaurant_id,name,address,latitude,longitude', 'customer:id,first_name,last_name,phone,phone_country'])
             ->where('payment_status', 'paid')
             ->where(function ($query) use ($driver) {
                 $query->where(function ($q) {
                     $q->whereIn('status', [
-                            FoodOrder::STATUS_PLACED,
+                            FoodOrder::STATUS_ACCEPTED,
                             FoodOrder::STATUS_READY_FOR_PICKUP,
                         ])
                         ->whereNull('driver_id');
                 })->orWhere(function ($q) use ($driver) {
                     $q->where('driver_id', $driver->id)
                         ->whereIn('status', [
-                            FoodOrder::STATUS_PLACED,
                             FoodOrder::STATUS_ACCEPTED,
                             FoodOrder::STATUS_PREPARING,
                             FoodOrder::STATUS_READY_FOR_PICKUP,
@@ -430,18 +455,16 @@ class FoodDeliveryApiController extends Controller
                 });
             })
             ->latest('id')
-            ->limit($limit)
             ->get();
         $orders->each(fn (FoodOrder $order) => $this->hideDeliveryOtpUnlessCustomer($order, $driver));
 
         Log::info('Food driver available orders response', [
             'driver_id' => $driver->id,
             'driver_user_type' => $driver->user_type,
-            'limit' => $limit,
             'count' => $orders->count(),
             'order_ids' => $orders->pluck('id')->values()->all(),
-            'placed_unassigned_ids' => $orders
-                ->where('status', FoodOrder::STATUS_PLACED)
+            'restaurant_accepted_unassigned_ids' => $orders
+                ->where('status', FoodOrder::STATUS_ACCEPTED)
                 ->whereNull('driver_id')
                 ->pluck('id')
                 ->values()
@@ -490,8 +513,8 @@ class FoodDeliveryApiController extends Controller
                 return null;
             }
 
-            if (! in_array($lockedOrder->status, [FoodOrder::STATUS_PLACED, FoodOrder::STATUS_READY_FOR_PICKUP], true)) {
-                $failure = [409, 'Only placed or ready food order can be accepted'];
+            if (! in_array($lockedOrder->status, [FoodOrder::STATUS_ACCEPTED, FoodOrder::STATUS_READY_FOR_PICKUP], true)) {
+                $failure = [409, 'Only restaurant accepted or ready food order can be accepted'];
 
                 return null;
             }
@@ -507,7 +530,7 @@ class FoodDeliveryApiController extends Controller
                 'changed_by_user_id' => $driver->id,
                 'note' => $oldStatus === FoodOrder::STATUS_READY_FOR_PICKUP
                     ? 'Ready order assigned to driver'
-                    : 'Driver assigned to food order',
+                    : 'Restaurant accepted order assigned to driver',
             ]);
 
             return $lockedOrder;
@@ -768,10 +791,8 @@ class FoodDeliveryApiController extends Controller
 
         $this->hideDeliveryOtpUnlessCustomer($order, $user);
 
-        $limit = (int) $request->input('limit', 250);
         $tracks = $order->locationTracks()
             ->orderByDesc('id')
-            ->limit($limit)
             ->get()
             ->reverse()
             ->values();
@@ -1036,33 +1057,13 @@ class FoodDeliveryApiController extends Controller
                 ]);
             }
 
-            $drivers = AppUser::query()
-                ->whereRaw('LOWER(user_type) = ?', ['driver'])
-                ->whereNotNull('fcm')
-                ->where('fcm', '!=', '')
-                ->select(['id', 'fcm', 'user_type'])
-                ->get();
-
-            $subject = 'New Food Delivery Request';
-            $message = "New order {$order->order_number} is available.";
-            $data = [
-                'route' => 'food_order',
-                'food_order_id' => (string) $order->id,
-                'food_order_status' => (string) $order->status,
-                'food_order_number' => (string) $order->order_number,
-            ];
-
-            foreach ($drivers as $driver) {
-                $this->sendFcmMessage($driver->fcm, $subject, $message, $data, 0, 'driver');
-            }
-
             Log::info('Food notification: order placed', [
                 'order_id' => $order->id,
                 'order_number' => $order->order_number,
                 'owner_id' => $owner?->id,
                 'owner_notified' => $ownerNotified,
-                'drivers_notified' => $drivers->count(),
-                'driver_ids' => $drivers->pluck('id')->values()->all(),
+                'drivers_notified' => 0,
+                'driver_dispatch' => 'deferred_until_restaurant_accepts',
             ]);
         } catch (\Throwable $e) {
             Log::error('Food notify failed on placed', [
@@ -1083,36 +1084,61 @@ class FoodDeliveryApiController extends Controller
                     'order_id' => $order->id,
                     'user_id' => $order->user_id,
                 ]);
-                return;
             }
 
             $subject = 'Food Order Accepted';
             $message = "A driver has been assigned to your order {$order->order_number}.";
             $data = [
                 'route' => 'food_order',
+                'target_app' => 'user',
                 'food_order_id' => (string) $order->id,
                 'food_order_status' => (string) $order->status,
                 'food_order_number' => (string) $order->order_number,
                 'driver_id' => (string) $driver->id,
             ];
 
-            $this->sendFcmMessage($customer->fcm, $subject, $message, $data, 0, 'user');
+            if ($customer && ! empty($customer->fcm)) {
+                $customerFcm = trim((string) $customer->fcm);
+                $driverFcm = trim((string) $driver->fcm);
+
+                if ($driverFcm !== '' && hash_equals($driverFcm, $customerFcm)) {
+                    Log::warning('Food notify skipped: customer FCM matches accepting driver FCM', [
+                        'order_id' => $order->id,
+                        'user_id' => $order->user_id,
+                        'driver_id' => $driver->id,
+                    ]);
+                } else {
+                    $this->sendFcmMessage($customerFcm, $subject, $message, $data, 0, 'user');
+                }
+            }
 
             $owner = $order->restaurant && $order->restaurant->owner_id
                 ? AppUser::find($order->restaurant->owner_id)
                 : null;
             if ($owner && ! empty($owner->fcm)) {
-                $this->sendFcmMessage(
-                    $owner->fcm,
-                    'Driver Assigned',
-                    "A driver has accepted {$order->order_number}. Please accept and prepare the order.",
-                    array_merge($data, [
-                        'route' => 'restaurant_food_order',
-                        'restaurant_id' => (string) $order->restaurant_id,
-                    ]),
-                    0,
-                    'restaurant_owner'
-                );
+                $ownerFcm = trim((string) $owner->fcm);
+                $driverFcm = trim((string) $driver->fcm);
+
+                if ($driverFcm !== '' && hash_equals($driverFcm, $ownerFcm)) {
+                    Log::warning('Food notify skipped: owner FCM matches accepting driver FCM', [
+                        'order_id' => $order->id,
+                        'owner_id' => $owner->id,
+                        'driver_id' => $driver->id,
+                    ]);
+                } else {
+                    $this->sendFcmMessage(
+                        $ownerFcm,
+                        'Driver Assigned',
+                        "A driver has accepted {$order->order_number}. Please accept and prepare the order.",
+                        array_merge($data, [
+                            'route' => 'restaurant_food_order',
+                            'target_app' => 'restaurant_owner',
+                            'restaurant_id' => (string) $order->restaurant_id,
+                        ]),
+                        0,
+                        'restaurant_owner'
+                    );
+                }
             }
         } catch (\Throwable $e) {
             Log::error('Food notify failed on accept', [
@@ -1133,6 +1159,7 @@ class FoodDeliveryApiController extends Controller
                 $message = "Order {$order->order_number} status: {$newStatus}";
                 $data = [
                     'route' => 'food_order',
+                    'target_app' => 'user',
                     'food_order_id' => (string) $order->id,
                     'food_order_status' => (string) $newStatus,
                     'food_order_prev_status' => (string) $oldStatus,
@@ -1153,6 +1180,7 @@ class FoodDeliveryApiController extends Controller
                     $message = "Order {$order->order_number} status changed to {$newStatus}.";
                     $data = [
                         'route' => 'food_order',
+                        'target_app' => 'driver',
                         'food_order_id' => (string) $order->id,
                         'food_order_status' => (string) $newStatus,
                         'food_order_prev_status' => (string) $oldStatus,
@@ -1168,6 +1196,7 @@ class FoodDeliveryApiController extends Controller
             if ($owner && ! empty($owner->fcm) && strtolower((string) $actor->user_type) === 'driver') {
                 $data = [
                     'route' => 'restaurant_food_order',
+                    'target_app' => 'restaurant_owner',
                     'food_order_id' => (string) $order->id,
                     'food_order_status' => (string) $newStatus,
                     'food_order_prev_status' => (string) $oldStatus,

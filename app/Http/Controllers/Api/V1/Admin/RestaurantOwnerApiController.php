@@ -206,7 +206,6 @@ class RestaurantOwnerApiController extends Controller
             ->where('restaurant_id', $restaurant->id)
             ->where('status', '!=', FoodOrder::STATUS_PAYMENT_PENDING)
             ->latest('id')
-            ->limit((int) $request->input('limit', 20))
             ->get();
         $this->hydrateCustomerSnapshots($orders);
 
@@ -594,7 +593,6 @@ class RestaurantOwnerApiController extends Controller
             ->where('status', '!=', FoodOrder::STATUS_PAYMENT_PENDING)
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->input('status')))
             ->latest('id')
-            ->limit((int) $request->input('limit', 50))
             ->get();
         $this->hydrateCustomerSnapshots($orders);
 
@@ -649,6 +647,9 @@ class RestaurantOwnerApiController extends Controller
 
         $freshOrder = $order->fresh(['items.foodItem', 'customer', 'driver', 'branch', 'restaurant']);
         $this->notifyRestaurantOrderStatusUpdated($freshOrder, $oldStatus, $newStatus);
+        if ($oldStatus === FoodOrder::STATUS_PLACED && $newStatus === FoodOrder::STATUS_ACCEPTED) {
+            $this->notifyDriversFoodOrderAvailable($freshOrder);
+        }
 
         return $this->addSuccessResponse(200, 'Order status updated successfully', $freshOrder);
     }
@@ -660,14 +661,10 @@ class RestaurantOwnerApiController extends Controller
             return $this->invalidOwnerToken();
         }
 
-        $limit = min(max((int) $request->input('limit', 20), 1), 100);
-        $offset = max((int) $request->input('offset', 0), 0);
         $summary = $this->ownerWalletSummary($owner->id);
 
         $transactions = VendorWallet::where('vendor_id', $owner->id)
             ->orderByDesc('id')
-            ->skip($offset)
-            ->take($limit)
             ->get()
             ->map(function (VendorWallet $wallet) {
                 return [
@@ -685,7 +682,6 @@ class RestaurantOwnerApiController extends Controller
         $withdrawals = Payout::where('vendorid', $owner->id)
             ->where('module', 3)
             ->orderByDesc('id')
-            ->limit(20)
             ->get()
             ->map(function (Payout $payout) {
                 return [
@@ -700,14 +696,10 @@ class RestaurantOwnerApiController extends Controller
                 ];
             });
 
-        $nextOffset = $transactions->isEmpty() ? -1 : $offset + $transactions->count();
-
         return $this->addSuccessResponse(200, 'Restaurant owner wallet fetched successfully', [
             'summary' => $summary,
             'transactions' => $transactions,
             'withdrawals' => $withdrawals,
-            'offset' => $nextOffset,
-            'limit' => $limit,
         ]);
     }
 
@@ -777,7 +769,7 @@ class RestaurantOwnerApiController extends Controller
                     $order->customer->fcm,
                     'Food Order Update',
                     "Order {$order->order_number} status: {$newStatus}",
-                    $data,
+                    array_merge($data, ['target_app' => 'user']),
                     0,
                     'user'
                 );
@@ -794,7 +786,7 @@ class RestaurantOwnerApiController extends Controller
                         ? 'Food Order Ready for Pickup'
                         : 'Restaurant Order Update',
                     $driverMessage,
-                    $data,
+                    array_merge($data, ['target_app' => 'driver']),
                     0,
                     'driver'
                 );
@@ -804,6 +796,53 @@ class RestaurantOwnerApiController extends Controller
                 'order_id' => $order->id,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function notifyDriversFoodOrderAvailable(FoodOrder $order): void
+    {
+        try {
+            if (! empty($order->driver_id)) {
+                return;
+            }
+
+            $drivers = AppUser::query()
+                ->whereRaw('LOWER(user_type) = ?', ['driver'])
+                ->whereNotNull('fcm')
+                ->where('fcm', '!=', '')
+                ->select(['id', 'fcm', 'user_type'])
+                ->get();
+
+            $data = [
+                'route' => 'food_order',
+                'target_app' => 'driver',
+                'food_order_id' => (string) $order->id,
+                'food_order_status' => (string) $order->status,
+                'food_order_number' => (string) $order->order_number,
+            ];
+
+            foreach ($drivers as $driver) {
+                $this->sendFcmMessage(
+                    $driver->fcm,
+                    'New Food Delivery Request',
+                    "Restaurant accepted {$order->order_number}. Delivery is available.",
+                    $data,
+                    0,
+                    'driver'
+                );
+            }
+
+            Log::info('Food notification: restaurant accepted order dispatched to drivers', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'drivers_notified' => $drivers->count(),
+                'driver_ids' => $drivers->pluck('id')->values()->all(),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Food notify drivers failed after restaurant accept', [
+                'order_id' => $order->id,
                 'error' => $e->getMessage(),
             ]);
         }

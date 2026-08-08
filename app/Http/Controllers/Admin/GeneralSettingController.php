@@ -29,6 +29,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -390,8 +392,136 @@ class GeneralSettingController extends Controller
 
     public function emailSetting()
     {
+        $keys = [
+            'host',
+            'port',
+            'username',
+            'password',
+            'encryption',
+            'from_email',
+            'from_name',
+            'general_email',
+            'general_phone',
+            'general_default_phone_country',
+            'general_name',
+        ];
+        $settings = GeneralSetting::whereIn('meta_key', $keys)->pluck('meta_value', 'meta_key');
 
-        return view('admin.generalSettings.email-setting.index');
+        return view('admin.generalSettings.email-setting.index', compact('settings'));
+    }
+
+    public function emailSettingUpdate(Request $request)
+    {
+        if (Gate::denies('general_setting_edit')) {
+            return redirect()->back()->with('error', 'Form submission is disabled in demo mode.');
+        }
+
+        $validated = $request->validate([
+            'host' => ['required', 'string', 'max:255'],
+            'port' => ['required', 'integer', 'min:1', 'max:65535'],
+            'username' => ['nullable', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'max:255'],
+            'encryption' => ['nullable', 'in:tls,ssl'],
+            'from_email' => ['required', 'email', 'max:255'],
+            'from_name' => ['required', 'string', 'max:120'],
+            'general_email' => ['nullable', 'email', 'max:255'],
+            'general_phone' => ['nullable', 'string', 'max:40'],
+            'general_default_phone_country' => ['nullable', 'string', 'max:10'],
+        ]);
+
+        if (! $request->filled('password')) {
+            unset($validated['password']);
+        }
+
+        foreach ($validated as $key => $value) {
+            GeneralSetting::updateOrCreate(
+                ['meta_key' => $key],
+                ['meta_value' => $value]
+            );
+        }
+
+        Artisan::call('config:clear');
+
+        return redirect()->route('admin.email')->with('success', 'Email settings updated successfully.');
+    }
+
+    public function emailSettingTest(Request $request)
+    {
+        if (Gate::denies('general_setting_edit')) {
+            return redirect()->back()->with('error', 'Form submission is disabled in demo mode.');
+        }
+
+        $validated = $request->validate([
+            'test_email' => ['required', 'email', 'max:255'],
+        ]);
+
+        $settings = GeneralSetting::whereIn('meta_key', [
+            'host',
+            'port',
+            'username',
+            'password',
+            'encryption',
+            'from_email',
+            'from_name',
+            'general_name',
+            'general_email',
+            'general_phone',
+            'general_default_phone_country',
+        ])->pluck('meta_value', 'meta_key')->toArray();
+
+        $senderEmail = trim((string) ($settings['from_email'] ?? config('mail.from.address')));
+        $senderName = trim((string) ($settings['from_name'] ?? $settings['general_name'] ?? config('mail.from.name')));
+        $senderName = $senderName !== '' ? $senderName : config('app.name', 'RideOn');
+        $replyToEmail = trim((string) ($settings['general_email'] ?? $senderEmail));
+
+        try {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp' => array_merge(config('mail.mailers.smtp', []), [
+                    'transport' => 'smtp',
+                    'host' => $settings['host'] ?? config('mail.mailers.smtp.host'),
+                    'port' => (int) ($settings['port'] ?? config('mail.mailers.smtp.port')),
+                    'username' => $settings['username'] ?? '',
+                    'password' => $settings['password'] ?? '',
+                    'encryption' => $settings['encryption'] ?? config('mail.mailers.smtp.encryption'),
+                ]),
+                'mail.from.address' => $senderEmail,
+                'mail.from.name' => $senderName,
+            ]);
+
+            if (method_exists(app('mail.manager'), 'purge')) {
+                app('mail.manager')->purge('smtp');
+            }
+
+            $emailData = [
+                'data' => '<h2>Email configuration test successful</h2><p>This message confirms that your SMTP settings and sender identity are working correctly.</p><p>If you received this email, your admin email configuration is ready for production use.</p>',
+                'general_email' => $settings['general_email'] ?? '',
+                'general_name' => $settings['general_name'] ?? $senderName,
+                'general_phone' => $settings['general_phone'] ?? '',
+                'general_default_phone_country' => $settings['general_default_phone_country'] ?? '',
+                'sender_name' => $senderName,
+                'sender_email' => $senderEmail,
+            ];
+
+            Mail::send('admin.emails.commonEmailTemplate', ['emailData' => $emailData], function ($mail) use ($validated, $senderEmail, $senderName, $replyToEmail) {
+                $mail->to($validated['test_email'])
+                    ->from($senderEmail, $senderName)
+                    ->subject('Email Configuration Test');
+
+                if ($replyToEmail !== '') {
+                    $mail->replyTo($replyToEmail, $senderName);
+                }
+            });
+
+            return redirect()->route('admin.email')->with('success', 'Test email sent successfully to '.$validated['test_email'].'.');
+        } catch (\Throwable $e) {
+            Log::error('Test email failed', [
+                'recipient' => $validated['test_email'],
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('admin.email')->with('error', 'Test email failed: '.$e->getMessage());
+        }
     }
 
     public function fees()
