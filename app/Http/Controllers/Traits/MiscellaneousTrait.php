@@ -51,14 +51,26 @@ trait MiscellaneousTrait
 
     public function checkUserByToken($token)
     {
+        $token = trim((string) $token);
 
-        $tokendata = AppUser::where('token', trim($token))->where('status', 1)->first();
+        $tokendata = $token !== ''
+            ? AppUser::where('token', $token)->where('status', 1)->first()
+            : null;
 
         if ($tokendata) {
             return $tokendata->id;
-        } else {
-            return '';
         }
+
+        $authenticatedUser = request()->user();
+        if (
+            $authenticatedUser instanceof AppUser &&
+            (string) $authenticatedUser->status === '1' &&
+            $authenticatedUser->user_type !== 'guest'
+        ) {
+            return $authenticatedUser->id;
+        }
+
+        return '';
     }
 
     public function getGeneralSettingValue($key)

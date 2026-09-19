@@ -76,7 +76,7 @@ class ReviewApiController extends Controller
     public function giveReviewByUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'booking_id' => 'required|numeric|exists:bookings,id',
             'rating' => 'required|integer|min:1|max:5',
             'message' => 'nullable|string',
@@ -171,7 +171,7 @@ class ReviewApiController extends Controller
     {
         // try {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'booking_id' => 'required|numeric|exists:bookings,id',
             'rating' => 'required|integer|min:1|max:5',
             'message' => 'nullable|string',

@@ -37,7 +37,7 @@ class BookingApiController extends Controller
         $validator = Validator::make($request->all(), [
             'item_id' => 'required|exists:rental_items,id',
             'driver_id' => 'required|exists:app_users,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'item_type_id' => 'required|exists:rental_item_types,id',
             'pickup_latitude' => 'required|numeric',
             'pickup_longitude' => 'required|numeric',
@@ -201,7 +201,7 @@ class BookingApiController extends Controller
     public function bookingRecord(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'booking_status' => 'nullable|string',
         ]);
 
@@ -378,7 +378,7 @@ class BookingApiController extends Controller
         Log::info('Confirm Booking Request Received', $request->all());
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'pickup_otp' => 'required|string',
         ]);
 
@@ -552,7 +552,7 @@ class BookingApiController extends Controller
             'coupon_code' => 'nullable|string',
             'wallet_amount' => 'nullable|numeric|min:0',
             'selected_currency_code' => 'nullable|string',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -634,7 +634,7 @@ class BookingApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'status' => 'required|string|in:Pending,Ongoing,Accepted,Rejected,Completed,Cancelled',
             'estimated_duration_min' => 'nullable|integer|min:1',
             'drop_otp' => 'nullable|string',
@@ -691,7 +691,7 @@ class BookingApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'status' => 'required|string',
         ]);
 
@@ -722,7 +722,7 @@ class BookingApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'role' => 'required|string|in:driver,rider,user',
             'recorded_at' => 'nullable|date',
             'audio' => 'required|file|mimes:aac,m4a,mp3,wav,webm,ogg,mp4|max:204800',
@@ -784,7 +784,7 @@ class BookingApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'payment_method' => 'required|string',
         ]);
 
@@ -821,7 +821,7 @@ class BookingApiController extends Controller
         $validator = Validator::make($request->all(), [
             'booking_id' => 'required|exists:bookings,id',
             'payment_method' => 'required',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
         ]);
 
         if ($validator->fails()) {

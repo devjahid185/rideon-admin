@@ -24,7 +24,7 @@ class ItemsApiController extends Controller
 
         $data = json_encode($request->all())."\n";
         $validator = Validator::make($request->all(), [
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
             'item_type_id' => 'required|exists:rental_item_types,id',
             'item_rating' => 'nullable|numeric',
             'status' => 'nullable|string|max:255',
@@ -102,7 +102,7 @@ class ItemsApiController extends Controller
 
         try {
             $validator = Validator::make($request->all(), [
-                'token' => 'required|exists:app_users,token',
+                'token' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -168,7 +168,7 @@ class ItemsApiController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:rental_items,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -286,7 +286,7 @@ class ItemsApiController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:rental_items,id',
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
         ]);
 
         if ($validator->fails()) {

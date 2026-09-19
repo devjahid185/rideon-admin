@@ -33,10 +33,14 @@ class TokenController extends Controller
         if ($request->filled('user_token')) {
 
             $user = AppUser::where('token', $request->input('user_token'))->first();
-            if (! $user) {
-                return $this->addSuccessResponse(419, 'Invalid user token.', []);
+            if ($user) {
+                $isRealUser = true;
+            } else {
+                $user = AppUser::firstOrCreate(
+                    ['email' => 'guest@unibooker.app'],// Never delete this user
+                    ['first_name' => 'Guest User', 'user_type' => 'guest', 'password' => bcrypt('f07c02db6c1c42289f58')]
+                );
             }
-            $isRealUser = true;
         } else {
             $user = AppUser::firstOrCreate(
                 ['email' => 'guest@unibooker.app'],// Never delete this user
@@ -46,7 +50,7 @@ class TokenController extends Controller
 
         $tokenInstance = $user->createToken('api-access');
         $token = $tokenInstance->plainTextToken;
-        $expiration = $isRealUser ? now()->addYears(5) : now()->addDays(7);
+        $expiration = now()->addYears(5);
         $tokenInstance->accessToken->expires_at = $expiration;
         $tokenInstance->accessToken->called_ip = $request->ip();
         $tokenInstance->accessToken->save();
@@ -55,6 +59,7 @@ class TokenController extends Controller
             'token' => $token,
             'type' => $request->type,
             'expires_at' => $expiration,
+            'user_token_valid' => $isRealUser,
         ]);
 
     }

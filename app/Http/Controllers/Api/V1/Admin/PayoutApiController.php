@@ -19,7 +19,7 @@ class PayoutApiController extends Controller
     public function getTotalPayoutAmount(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'token' => 'required|exists:app_users,token',
+            'token' => 'required|string',
         ]);
         if ($validator->fails()) {
             return $this->addErrorResponse(419, trans('global.invalid_token'), $validator->errors());
