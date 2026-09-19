@@ -718,6 +718,68 @@ class BookingApiController extends Controller
         ]);
     }
 
+    public function uploadRideAudioRecording(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'booking_id' => 'required|exists:bookings,id',
+            'token' => 'required|exists:app_users,token',
+            'role' => 'required|string|in:driver,rider,user',
+            'recorded_at' => 'nullable|date',
+            'audio' => 'required|file|mimes:aac,m4a,mp3,wav,webm,ogg,mp4|max:204800',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorComputing($validator);
+        }
+
+        $user = AppUser::where('token', $request->input('token'))->first();
+        if (! $user) {
+            return $this->addErrorResponse(401, trans('global.token_not_match'), '');
+        }
+
+        $booking = Booking::where('id', $request->input('booking_id'))
+            ->where(function ($query) use ($user, $request) {
+                $role = $request->input('role') === 'rider' ? 'user' : $request->input('role');
+
+                if ($role === 'driver') {
+                    $query->where('host_id', $user->id);
+                } else {
+                    $query->where('userid', $user->id);
+                }
+            })
+            ->first();
+
+        if (! $booking) {
+            return $this->addErrorResponse(404, trans('global.booking_not_found'), '');
+        }
+
+        $role = $request->input('role') === 'user' ? 'rider' : $request->input('role');
+        $fileName = sprintf(
+            'ride-%s-%s-%s.%s',
+            $booking->id,
+            $role,
+            now()->format('YmdHis'),
+            $request->file('audio')->getClientOriginalExtension() ?: 'm4a'
+        );
+
+        $media = $booking
+            ->addMediaFromRequest('audio')
+            ->usingName(ucfirst($role).' ride safety recording')
+            ->usingFileName($fileName)
+            ->withCustomProperties([
+                'role' => $role,
+                'recorded_at' => $request->input('recorded_at'),
+                'uploaded_by' => $user->id,
+            ])
+            ->toMediaCollection('ride_audio_recordings');
+
+        return $this->addSuccessResponse(200, 'Ride audio recording uploaded successfully.', [
+            'booking_id' => $booking->id,
+            'media_id' => $media->id,
+            'url' => $media->getUrl(),
+        ]);
+    }
+
     public function updatePaymentStatusByDriver(Request $request)
     {
         $validator = Validator::make($request->all(), [

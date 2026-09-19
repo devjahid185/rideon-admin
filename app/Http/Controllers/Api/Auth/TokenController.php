@@ -36,7 +36,6 @@ class TokenController extends Controller
             if (! $user) {
                 return $this->addSuccessResponse(419, 'Invalid user token.', []);
             }
-            $user->tokens()->delete();
             $isRealUser = true;
         } else {
             $user = AppUser::firstOrCreate(
@@ -47,7 +46,7 @@ class TokenController extends Controller
 
         $tokenInstance = $user->createToken('api-access');
         $token = $tokenInstance->plainTextToken;
-        $expiration = $isRealUser ? now()->addDays(7) : now()->addMinutes(30);
+        $expiration = $isRealUser ? now()->addYears(5) : now()->addDays(7);
         $tokenInstance->accessToken->expires_at = $expiration;
         $tokenInstance->accessToken->called_ip = $request->ip();
         $tokenInstance->accessToken->save();

@@ -142,6 +142,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::post('/updatePaymentStatusByDriver', 'BookingApiController@updatePaymentStatusByDriver');
     Route::post('/updatePaymentStatusByUser', 'BookingApiController@updatePaymentStatusByUser');
     Route::post('/updateBookingStatusByUser', 'BookingApiController@updateBookingStatusByUser');
+    Route::post('/ride-audio-recordings', 'BookingApiController@uploadRideAudioRecording');
 
     Route::post('/editProfile', 'MyAccountController@editProfile');
     Route::post('/uploadProfileImage', 'MyAccountController@uploadProfileImage');

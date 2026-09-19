@@ -106,6 +106,47 @@
                                 </tr>
                             @endif
 
+                            @php
+                                $rideAudioRecordings = $bookingData->getMedia('ride_audio_recordings');
+                            @endphp
+
+                            <tr>
+                                <th class="icon-header">
+                                    <i class="fas fa-microphone-alt table-icon"></i>
+                                    Ride Audio Recordings
+                                </th>
+                                <td>
+                                    @if ($rideAudioRecordings->isNotEmpty())
+                                        <div style="display:flex; flex-direction:column; gap:12px;">
+                                            @foreach ($rideAudioRecordings as $media)
+                                                @php
+                                                    $role = ucfirst($media->getCustomProperty('role', 'ride'));
+                                                    $recordedAt = $media->getCustomProperty('recorded_at');
+                                                @endphp
+                                                <div style="padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#f8fafc;">
+                                                    <div style="font-weight:700;margin-bottom:6px;">
+                                                        {{ $role }} recording
+                                                        @if ($recordedAt)
+                                                            <small class="text-muted">({{ $recordedAt }})</small>
+                                                        @endif
+                                                    </div>
+                                                    <audio controls preload="none" style="width:100%;">
+                                                        <source src="{{ $media->getUrl() }}" type="{{ $media->mime_type }}">
+                                                    </audio>
+                                                    <a class="btn btn-xs btn-primary" href="{{ $media->getUrl() }}" target="_blank" style="margin-top:6px;">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <span class="text-muted">
+                                            No ride audio recordings uploaded yet.
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+
                             <tr>
                                 <th class="icon-header">
                                     {{ trans('booking.vehicle_number') }}
