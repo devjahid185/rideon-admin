@@ -385,7 +385,7 @@ class BookingApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
         }
@@ -549,32 +549,37 @@ class BookingApiController extends Controller
         $validator = Validator::make($request->all(), [
             'item_type_id' => 'required|exists:rental_item_types,id',
             'distance' => 'required|numeric|min:0',
+            'booking_id' => 'nullable|exists:bookings,id',
             'coupon_code' => 'nullable|string',
             'wallet_amount' => 'nullable|numeric|min:0',
             'selected_currency_code' => 'nullable|string',
-            'token' => 'required|string',
+            'token' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
 
-        $userid = $this->checkUserByToken($request->token);
-        if (! $userid) {
+        $userid = $request->filled('token') ? $this->checkUserByToken($request->token) : '';
+        $couponCode = $request->input('coupon_code');
+
+        if (! $userid && ($request->filled('booking_id') || ! empty($couponCode))) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
         }
-        $booking = Booking::where('id', $request->booking_id)
-            ->where('userid', $userid)
-            ->where('status', 'Completed')
-            ->first();
 
-        if (! $booking) {
-            return $this->addErrorResponse(419, trans('global.booking_not_found'), '');
+        $booking = null;
+        if ($request->filled('booking_id')) {
+            $booking = Booking::where('id', $request->booking_id)
+                ->where('userid', $userid)
+                ->first();
+
+            if (! $booking) {
+                return $this->addErrorResponse(419, trans('global.booking_not_found'), '');
+            }
         }
 
         $itemTypeId = $request->input('item_type_id');
         $distance = $request->input('distance');
-        $couponCode = $request->input('coupon_code');
         $walletAmount = $request->input('wallet_amount', 0);
         $selectedCurrencyCode = $request->input('selected_currency_code', 'USD');
         $conversionRate = Currency::getValueByCurrencyCode($selectedCurrencyCode);
@@ -617,15 +622,17 @@ class BookingApiController extends Controller
 
         $pricingResult = $this->getItemPricesDetails($itemTypeId, $distance, $couponCode, $walletAmount, $selectedCurrencyCode, $conversionRate);
         $pricing = $pricingResult->getData(true)['data'];
-        $booking->price_per_km = $pricing['price_per_km'];
-        $booking->base_price = $pricing['price_before_discount'];
-        $booking->total = $pricing['gross_price'];
-        $booking->wall_amt = $pricing['wallet_amount'];
-        $booking->coupon_code = $pricing['coupon_code'];
-        $booking->coupon_discount = $pricing['coupon_discount'];
-        $booking->discount_price = $pricing['coupon_discount'];
-        $booking->amount_to_pay = $pricing['gross_price'];
-        $booking->save();
+        if ($booking) {
+            $booking->price_per_km = $pricing['price_per_km'];
+            $booking->base_price = $pricing['price_before_discount'];
+            $booking->total = $pricing['gross_price'];
+            $booking->wall_amt = $pricing['wallet_amount'];
+            $booking->coupon_code = $pricing['coupon_code'];
+            $booking->coupon_discount = $pricing['coupon_discount'];
+            $booking->discount_price = $pricing['coupon_discount'];
+            $booking->amount_to_pay = $pricing['gross_price'];
+            $booking->save();
+        }
 
         return $pricingResult;
     }
@@ -645,7 +652,7 @@ class BookingApiController extends Controller
             return $this->errorComputing($validator);
         }
 
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(401, trans('global.token_not_match'), '');
         }
@@ -699,7 +706,7 @@ class BookingApiController extends Controller
             return $this->errorComputing($validator);
         }
 
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(401, trans('global.token_not_match'), '');
         }
@@ -732,7 +739,7 @@ class BookingApiController extends Controller
             return $this->errorComputing($validator);
         }
 
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(401, trans('global.token_not_match'), '');
         }

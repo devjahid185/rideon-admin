@@ -51,6 +51,13 @@ trait MiscellaneousTrait
 
     public function checkUserByToken($token)
     {
+        $user = $this->getUserByTokenOrBearer($token);
+
+        return $user ? $user->id : '';
+    }
+
+    public function getUserByTokenOrBearer($token)
+    {
         $token = trim((string) $token);
 
         $tokendata = $token !== ''
@@ -58,7 +65,7 @@ trait MiscellaneousTrait
             : null;
 
         if ($tokendata) {
-            return $tokendata->id;
+            return $tokendata;
         }
 
         $authenticatedUser = request()->user();
@@ -67,10 +74,10 @@ trait MiscellaneousTrait
             (string) $authenticatedUser->status === '1' &&
             $authenticatedUser->user_type !== 'guest'
         ) {
-            return $authenticatedUser->id;
+            return $authenticatedUser;
         }
 
-        return '';
+        return null;
     }
 
     public function getGeneralSettingValue($key)
