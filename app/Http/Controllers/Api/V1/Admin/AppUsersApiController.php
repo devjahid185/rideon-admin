@@ -42,6 +42,16 @@ class AppUsersApiController extends Controller
 {
     use EmailTrait, FirestoreTrait, MediaUploadingTrait, MiscellaneousTrait, NotificationTrait, OTPTrait, PushNotificationTrait, ResponseTrait, SMSTrait, UserWalletTrait, VendorWalletTrait;
 
+    private function ensureStableAppToken(AppUser $user): AppUser
+    {
+        if (empty($user->token)) {
+            $user->token = Str::random(120);
+            $user->save();
+        }
+
+        return $user->refresh();
+    }
+
     public function index()
     {
         abort_if(Gate::denies('app_user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -242,9 +252,9 @@ class AppUsersApiController extends Controller
             $resultOtp = $this->validateOtpFromDB($request->phone, $request->phone_country, $request->otp_value);
             if ($resultOtp['status'] === 'success') {
 
-                $token = Str::random(120);
                 $customer = AppUser::where('phone', $request->phone)->where('phone_country', $request->phone_country)->first();
                 $customer->update(['otp_value' => '0', 'email_verify' => '1', 'phone_verify' => '1', 'status' => '1', 'verified' => '1']);
+                $customer = $this->ensureStableAppToken($customer);
                 $module = $this->getModuleIdOrDefault($request);
                 $item = Item::where('userid_id', $customer->id)->first();
 
@@ -290,9 +300,7 @@ class AppUsersApiController extends Controller
             if ($validator->fails()) {
                 return $this->errorComputing($validator);
             }
-            if (AppUser::where('token', $request->token)->exists()) {
-                AppUser::where('token', $request->token)->update(['token' => '']);
-
+            if ($this->getUserByTokenOrBearer($request->token)) {
                 return $this->successResponse(200, trans('global.Logout_Sucessfully'));
             }
         } catch (\Exception $e) {
@@ -321,7 +329,7 @@ class AppUsersApiController extends Controller
 
             if (Auth::guard('appUser')->attempt($data)) {
                 $otp = $this->createOTP();
-                AppUser::where('phone', $request->phone)->update(['otp_value' => $otp, 'token' => '']);
+                AppUser::where('phone', $request->phone)->update(['otp_value' => $otp]);
                 $customer = AppUser::where('phone', $request->phone)->first();
                 unset($customer['token']);
 
@@ -366,8 +374,7 @@ class AppUsersApiController extends Controller
                     return $this->successResponse(200, trans('global.account_inactive'), $customer);
                 }
 
-                $token = Str::random(120);
-                $customer->update(['token' => $token]);
+                $customer = $this->ensureStableAppToken($customer);
 
                 $mediaItem = Media::where('model_id', $customer->id)
                     ->where('model_type', 'App\Models\AppUser')
@@ -452,13 +459,12 @@ class AppUsersApiController extends Controller
             $resultOtp = $this->validateOtpFromDB($request->phone, $request->phone_country, $request->otp_value);
             if ($resultOtp['status'] === 'success') {
 
-                $token = Str::random(120);
                 $customer = AppUser::where('phone', $request->phone)->where('phone_country', $request->phone_country)->first();
                 if ($customer->status != 1) {
                     return $this->successResponse(200, trans('global.account_inactive'), $customer);
                 }
 
-                $customer->update(['token' => $token]);
+                $customer = $this->ensureStableAppToken($customer);
                 if ($request->user_type == 'driver') {
                     if ($customer->user_type == 'user') {
                         $customer->update([
@@ -621,7 +627,7 @@ class AppUsersApiController extends Controller
         $template_id = 3;
         $this->sendAllNotifications($valuesArray, $user->id, $template_id);
 
-        AppUser::where('email', $request->email)->update(['reset_token' => $otp, 'token' => '']);
+        AppUser::where('email', $request->email)->update(['reset_token' => $otp]);
         $responseData = [];
         $responseData['reset_token'] = '';
         if (GeneralSetting::getMetaValue('auto_fill_otp')) {
@@ -653,13 +659,11 @@ class AppUsersApiController extends Controller
 
         $resultOtp = $this->validateOtpFromDB($user->phone, $user->phone_country, $request->otp_value);
         if ($resultOtp['status'] === 'success') {
-            $token = Str::random(120);
-
             if ($user->status != 1) {
                 return $this->successResponse(200, trans('global.account_inactive'), $user);
             }
 
-            $user->update(['token' => $token]);
+            $user = $this->ensureStableAppToken($user);
 
             $module = $this->getModuleIdOrDefault($request);
             $remainingItems = $this->checkRemainingItems($user->id, $module);
@@ -775,15 +779,14 @@ class AppUsersApiController extends Controller
 
     private function generateAccessToken($email)
     {
-        $token = Str::random(120);
-        AppUser::where('email', $email)->update([
+        $user = AppUser::where('email', $email)->firstOrFail();
+        $user = $this->ensureStableAppToken($user);
+        $user->update([
             'otp_value' => '0',
-            'token' => $token,
             'verified' => '1',
         ]);
-        $customer = AppUser::where('email', $email)->first();
 
-        return $customer;
+        return $user->refresh();
     }
 
     public function forgotPassword(Request $request)
@@ -809,7 +812,7 @@ class AppUsersApiController extends Controller
         $template_id = 3;
         $this->sendAllNotifications($valuesArray, $user->id, $template_id);
 
-        AppUser::where('email', $request->email)->update(['reset_token' => $otp, 'token' => '']);
+        AppUser::where('email', $request->email)->update(['reset_token' => $otp]);
         $responseData = [];
         $responseData['reset_token'] = '';
         if (GeneralSetting::getMetaValue('auto_fill_otp')) {
@@ -965,7 +968,7 @@ class AppUsersApiController extends Controller
 
         $user = null;
         if ($request->has('token')) {
-            $user = AppUser::where('token', $request->input('token'))->first();
+            $user = $this->getUserByTokenOrBearer($request->input('token'));
         }
         if (! $user) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
@@ -1047,7 +1050,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $checkdata = AppUser::where('token', $request->input('token'))->first();
+        $checkdata = $this->getUserByTokenOrBearer($request->input('token'));
         if ($checkdata) {
             $otp = $this->generateOtp($checkdata->phone, $checkdata->phone_country);
 
@@ -1085,7 +1088,7 @@ class AppUsersApiController extends Controller
             if ($validator->fails()) {
                 return $this->errorComputing($validator);
             }
-            if (AppUser::where('token', $request->token)->exists()) {
+            if ($this->getUserByTokenOrBearer($request->token)) {
 
                 return $this->successResponse(200, trans('global.user_exist'));
             } else {
@@ -1112,7 +1115,7 @@ class AppUsersApiController extends Controller
                 }
             }
 
-            $user = AppUser::where('token', $request->input('token'))->first();
+            $user = $this->getUserByTokenOrBearer($request->input('token'));
 
             if (! $user) {
                 return $this->addErrorResponse(419, trans('global.token_not_match'), '');
@@ -1145,7 +1148,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
         }
@@ -1176,7 +1179,7 @@ class AppUsersApiController extends Controller
         $offset = $request->input('offset', 0);
 
         try {
-            $user = AppUser::where('token', $request->input('token'))->first();
+            $user = $this->getUserByTokenOrBearer($request->input('token'));
             if (! $user) {
                 return $this->addErrorResponse(419, trans('global.token_not_match'), '');
             }
@@ -1218,7 +1221,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
         }
@@ -1256,7 +1259,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->addErrorResponse(419, trans('global.token_not_match'), '');
         }
@@ -1285,7 +1288,7 @@ class AppUsersApiController extends Controller
                 return $this->errorComputing($validator);
             }
 
-            $user = AppUser::where('token', $request->input('token'))->first();
+            $user = $this->getUserByTokenOrBearer($request->input('token'));
             if (! $user) {
                 return $this->addErrorResponse(404, trans('global.user_not_found'), '');
             }
@@ -1331,7 +1334,7 @@ class AppUsersApiController extends Controller
             }
 
             // Find the user by token
-            $user = AppUser::where('token', $request->token)->first();
+            $user = $this->getUserByTokenOrBearer($request->token);
 
             if (! $user) {
                 return $this->errorResponse(404, trans('global.User_not_found'));
@@ -1360,7 +1363,7 @@ class AppUsersApiController extends Controller
             return $this->errorComputing($validator);
         }
 
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
 
         $payoutMethodId = $request->input('active_payout_method_id');
 
@@ -1437,7 +1440,7 @@ class AppUsersApiController extends Controller
         $offset = $request->input('offset', 0);
 
         try {
-            $user = AppUser::where('token', $request->input('token'))->first();
+            $user = $this->getUserByTokenOrBearer($request->input('token'));
 
             if (! $user) {
                 return $this->errorResponse(404, trans('global.User_not_found'));
@@ -1488,7 +1491,7 @@ class AppUsersApiController extends Controller
             return $this->errorComputing($validator);
         }
 
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->errorResponse(401, trans('global.user_not_found'));
         }
@@ -1525,7 +1528,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->errorResponse(401, trans('global.user_not_found'));
         }
@@ -1592,7 +1595,7 @@ class AppUsersApiController extends Controller
         if ($validator->fails()) {
             return $this->errorComputing($validator);
         }
-        $user = AppUser::where('token', $request->input('token'))->first();
+        $user = $this->getUserByTokenOrBearer($request->input('token'));
         if (! $user) {
             return $this->errorResponse(401, trans('global.user_not_found'));
         }
