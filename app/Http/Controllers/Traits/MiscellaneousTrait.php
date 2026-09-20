@@ -77,7 +77,38 @@ trait MiscellaneousTrait
             return $authenticatedUser;
         }
 
+        \Log::warning('app_user_token_resolution_failed', [
+            'route' => optional(request()->route())->uri(),
+            'method' => request()->method(),
+            'path' => request()->path(),
+            'ip' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'request_token_preview' => $this->safeTokenPreview($token),
+            'request_token_length' => strlen($token),
+            'has_x_auth_token' => request()->headers->has('x-auth-token'),
+            'x_auth_token_preview' => $this->safeTokenPreview((string) request()->header('x-auth-token', '')),
+            'has_bearer_token' => request()->bearerToken() !== null,
+            'bearer_token_preview' => $this->safeTokenPreview((string) request()->bearerToken()),
+            'auth_user_id' => optional($authenticatedUser)->id,
+            'auth_user_type' => optional($authenticatedUser)->user_type,
+            'auth_user_status' => optional($authenticatedUser)->status,
+        ]);
+
         return null;
+    }
+
+    private function safeTokenPreview($token)
+    {
+        $token = (string) $token;
+        if ($token === '') {
+            return '';
+        }
+
+        if (strlen($token) <= 12) {
+            return substr($token, 0, 3).'...';
+        }
+
+        return substr($token, 0, 6).'...'.substr($token, -6);
     }
 
     public function getGeneralSettingValue($key)

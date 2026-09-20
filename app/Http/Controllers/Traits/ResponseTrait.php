@@ -4,6 +4,28 @@ namespace App\Http\Controllers\Traits;
 
 trait ResponseTrait
 {
+    private function logApiError($code, $message, $data = null, $context = [])
+    {
+        if ((int) $code < 400) {
+            return;
+        }
+
+        \Log::warning('api_error_response', array_merge([
+            'status' => (int) $code,
+            'message' => $message,
+            'route' => optional(request()->route())->uri(),
+            'method' => request()->method(),
+            'path' => request()->path(),
+            'ip' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'has_request_token' => request()->filled('token'),
+            'has_x_auth_token' => request()->headers->has('x-auth-token'),
+            'has_bearer_token' => request()->bearerToken() !== null,
+            'auth_user_id' => optional(request()->user())->id,
+            'data' => is_scalar($data) || is_null($data) ? $data : '[non-scalar]',
+        ], $context));
+    }
+
     public function successResponse($code = '', $message = '', $data = '')
     {
         return response()->json([
@@ -26,6 +48,8 @@ trait ResponseTrait
 
     public function errorResponse($code = '', $message = '', $data = '')
     {
+        $this->logApiError($code, $message, $data);
+
         return response()->json([
             'status' => $code,
             'ResponseCode' => $code,
@@ -37,6 +61,8 @@ trait ResponseTrait
 
     public function addErrorResponse($code = '', $message = '', $data = '')
     {
+        $this->logApiError($code, $message, $data);
+
         return response()->json([
             'status' => $code,
             'ResponseCode' => $code,
@@ -63,6 +89,10 @@ trait ResponseTrait
                 $statusCode = 419; // token expired/invalid
             }
         }
+
+        $this->logApiError($statusCode, $err_container, null, [
+            'validation_errors' => $validator->errors()->toArray(),
+        ]);
 
         return response()->json([
             'status' => $statusCode,
