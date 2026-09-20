@@ -77,7 +77,7 @@ trait MiscellaneousTrait
             return $authenticatedUser;
         }
 
-        \Log::warning('app_user_token_resolution_failed', [
+        $payload = [
             'route' => optional(request()->route())->uri(),
             'method' => request()->method(),
             'path' => request()->path(),
@@ -92,9 +92,26 @@ trait MiscellaneousTrait
             'auth_user_id' => optional($authenticatedUser)->id,
             'auth_user_type' => optional($authenticatedUser)->user_type,
             'auth_user_status' => optional($authenticatedUser)->status,
-        ]);
+        ];
+
+        \Log::warning('app_user_token_resolution_failed', $payload);
+        $this->writeTokenDebugLog('app_user_token_resolution_failed', $payload);
 
         return null;
+    }
+
+    private function writeTokenDebugLog($event, array $payload)
+    {
+        try {
+            $line = json_encode(array_merge([
+                'time' => now()->toDateTimeString(),
+                'event' => $event,
+            ], $payload), JSON_UNESCAPED_SLASHES).PHP_EOL;
+
+            file_put_contents(storage_path('logs/api-token-debug.log'), $line, FILE_APPEND | LOCK_EX);
+        } catch (\Throwable $e) {
+            // Token checks must not fail just because diagnostic logging cannot write.
+        }
     }
 
     private function safeTokenPreview($token)

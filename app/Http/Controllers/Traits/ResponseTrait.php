@@ -10,7 +10,7 @@ trait ResponseTrait
             return;
         }
 
-        \Log::warning('api_error_response', array_merge([
+        $payload = array_merge([
             'status' => (int) $code,
             'message' => $message,
             'route' => optional(request()->route())->uri(),
@@ -19,11 +19,46 @@ trait ResponseTrait
             'ip' => request()->ip(),
             'user_agent' => request()->userAgent(),
             'has_request_token' => request()->filled('token'),
+            'request_token_preview' => $this->responseSafeTokenPreview((string) request()->input('token', '')),
+            'request_token_length' => strlen((string) request()->input('token', '')),
             'has_x_auth_token' => request()->headers->has('x-auth-token'),
+            'x_auth_token_preview' => $this->responseSafeTokenPreview((string) request()->header('x-auth-token', '')),
             'has_bearer_token' => request()->bearerToken() !== null,
+            'bearer_token_preview' => $this->responseSafeTokenPreview((string) request()->bearerToken()),
             'auth_user_id' => optional(request()->user())->id,
             'data' => is_scalar($data) || is_null($data) ? $data : '[non-scalar]',
-        ], $context));
+        ], $context);
+
+        \Log::warning('api_error_response', $payload);
+        $this->writeResponseApiDebugLog('api_error_response', $payload);
+    }
+
+    private function writeResponseApiDebugLog($event, array $payload)
+    {
+        try {
+            $line = json_encode(array_merge([
+                'time' => now()->toDateTimeString(),
+                'event' => $event,
+            ], $payload), JSON_UNESCAPED_SLASHES).PHP_EOL;
+
+            file_put_contents(storage_path('logs/api-token-debug.log'), $line, FILE_APPEND | LOCK_EX);
+        } catch (\Throwable $e) {
+            // Keep API responses working even if debug logging cannot write.
+        }
+    }
+
+    private function responseSafeTokenPreview($token)
+    {
+        $token = (string) $token;
+        if ($token === '') {
+            return '';
+        }
+
+        if (strlen($token) <= 12) {
+            return substr($token, 0, 3).'...';
+        }
+
+        return substr($token, 0, 6).'...'.substr($token, -6);
     }
 
     public function successResponse($code = '', $message = '', $data = '')
