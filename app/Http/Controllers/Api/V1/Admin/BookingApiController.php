@@ -149,6 +149,10 @@ class BookingApiController extends Controller
             $booking->save();
             $responseData = [
                 'booking_id' => $booking->id,
+                'ride_id' => $booking->extension->ride_id ?? 0,
+                'booking_token' => $booking->token ?? 0,
+                'pickup_otp' => $booking->extension->pick_otp ?? 0,
+                'drop_otp' => $booking->extension->drop_otp ?? 0,
                 'status' => $booking->status,
                 'payment_url' => route('payment_success', ['booking' => $booking->id]),
             ];
